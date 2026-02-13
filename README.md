@@ -25,7 +25,7 @@ La solución está compuesta por tres capas principales:
 
 ## 🧩 Diagrama de Componentes
 
-![Diagrama de Componentes](frontend/docs/diagramaComponentes.png)
+![Diagrama de Componentes](backend/docs/diagramaComponentes.png)
 
 ### Descripción
 
@@ -37,7 +37,7 @@ La solución está compuesta por tres capas principales:
 
 ## 🚀 Diagrama de Despliegue
 
-![Diagrama de Despliegue](frontend/docs/diagramaDespliegue.png)
+![Diagrama de Despliegue](backend/docs/diagramaDespliegue.png)
 
 ### Descripción
 
@@ -51,7 +51,7 @@ La solución está compuesta por tres capas principales:
 
 ## 🔄 Diagrama de Flujo de Datos
 
-![Diagrama de Flujo de datos](frontend/docs/diagramaFlujoDatos.png)
+![Diagrama de Flujo de datos](backend/docs/diagramaDeFlujoDeDatos.png)
 
 ---
 
