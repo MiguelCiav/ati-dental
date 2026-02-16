@@ -1,39 +1,63 @@
-version: '3.8' 
-
 services:
-  
-  frontend: 
-    build:
-      context: ./frontend 
-      dockerfile: Dockerfile 
+  # --- INFRAESTRUCTURA DE AUTOMATIZACIÓN (TAREA JENKINS) ---
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins_server
+    privileged: true
+    user: root
     ports:
-      - "80:80" 
-    depends_on:
-      - api 
-
-  api: 
-    build:
-      context: ./backend/server 
-      dockerfile: Dockerfile 
-    ports:
-      - "3000:3000" 
-    environment:
-      
-      - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin 
-    depends_on:
-      - mongo 
-
-  mongo: 
-    image: mongo:6.0 
-    container_name: mongodb_server 
-    restart: always 
-    ports:
-      - "27017:27017" 
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin 
-      - MONGO_INITDB_ROOT_PASSWORD=password123 
+      - "8087:8080"   # Acceso web por el puerto 8085
+      - "50000:50000" # Comunicación de agentes
     volumes:
-      - mongo-data:/data/db 
+      - ./jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # Permite a Jenkins usar Docker
+    networks:
+      - ati-network
 
+  # --- APLICACIÓN ATI-DENTAL ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - ati-network
+
+  api:
+    build:
+      context: ./backend/server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin
+    depends_on:
+      - mongo
+    networks:
+      - ati-network
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb_server
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - ati-network
+
+# Definición de volúmenes y redes
 volumes:
-  mongo-data: 
+  mongo-data:
+  jenkins_data: # Persistencia para Jenkins
+
+networks:
+  ati-network:
+    driver: bridge
