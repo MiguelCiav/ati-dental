@@ -9,8 +9,8 @@ services:
       - "8087:8080" # Acceso web por el puerto 8085
       - "50000:50000" # Comunicación de agentes
     volumes:
-      - ./jenkins:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock # Permite a Jenkins usar Docker
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - ati-network
     dns:
