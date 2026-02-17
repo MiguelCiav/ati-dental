@@ -1,7 +1,7 @@
 # --- Jenkins & Docker Specific ---
 jenkins_home/
 
-# Secretos y Llaves
+# Secretos y Llaves.
 *.pem
 secrets.xml
 master.key
