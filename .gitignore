@@ -1,28 +1,22 @@
-# Jenkins
-# Allow configuration sharing (so NOT ignoring jenkins_home/ entirely)
-jenkins_home/secrets/
-jenkins_home/workspace/
-jenkins_home/logs/
-jenkins_home/caches/
-jenkins_home/war/
-jenkins_home/updates/
-jenkins_home/plugins/
-jenkins_home/.java/
-jenkins_home/.owner
-jenkins_home/.lastStarted
-jenkins_home/*.log
-jenkins_home/copy_reference_file.log
-jenkins_home/identity.key.enc
-jenkins_home/secret.key
-jenkins_home/secret.key.not-so-secret
+# --- Jenkins & Docker Specific ---
+jenkins_home/
 
-# Job specific build artifacts (keep config.xml)
-jenkins_home/jobs/*/builds/
-jenkins_home/jobs/*/workspace/
-jenkins_home/jobs/*/nextBuildNumber
-jenkins_home/jobs/*/lastStable
-jenkins_home/jobs/*/lastSuccessful
-jenkins_home/jobs/*/*.log
+# Secretos y Llaves
+*.pem
+secrets.xml
+master.key
+secret.key
+secret.key.not-so-secret
+
+# Archivos temporales de Docker y logs
+.docker/
+*.log
+
+# --- QA Tools Artifacts ---
+test-results/
+cypress/videos/
+cypress/screenshots/
+*.jtl
 
 # Dependencies
 node_modules/
