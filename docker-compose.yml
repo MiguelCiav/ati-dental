@@ -6,13 +6,16 @@ services:
     privileged: true
     user: root
     ports:
-      - "8087:8080"   # Acceso web por el puerto 8085
+      - "8087:8080" # Acceso web por el puerto 8085
       - "50000:50000" # Comunicación de agentes
     volumes:
-      - ./jenkins_data:/var/jenkins_home
+      - ./jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock # Permite a Jenkins usar Docker
     networks:
       - ati-network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   # --- APLICACIÓN ATI-DENTAL ---
   frontend:
@@ -56,7 +59,8 @@ services:
 # Definición de volúmenes y redes
 volumes:
   mongo-data:
-  jenkins_data: # Persistencia para Jenkins
+  jenkins_data:
+    # Persistencia para Jenkins
 
 networks:
   ati-network:
