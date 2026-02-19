@@ -1,0 +1,22 @@
+# ============================================================
+# Dockerfile.build — Stage: Compilación del frontend (React/Vite)
+# Imagen resultante: frontend-app:build
+# Propósito: instalar dependencias y generar el bundle de producción.
+# ============================================================
+FROM node:18-alpine
+
+# Directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copiamos primero los manifiestos para aprovechar la caché de capas:
+# si package.json no cambió, npm install se reutiliza.
+COPY package*.json ./
+
+# Instalamos todas las dependencias (incluyendo devDependencies para el build)
+RUN npm ci
+
+# Copiamos el resto del código fuente
+COPY . .
+
+# Compilamos el proyecto con Vite — genera la carpeta /app/dist
+RUN npm run build

@@ -11,7 +11,30 @@ pipeline {
                 sh 'docker version' 
             }
         }
-        stage('Build Frontend') { steps { echo 'Maqueta: Build' } }
+        stage('Build Frontendd') {
+            steps {
+                sh '''#!/bin/sh
+                set -eux
+
+                docker build \
+                    -f frontend/Dockerfile.build \
+                    -t frontend-app:build \
+                    frontend
+                '''
+            }
+        }
+        stage('Frontend Production Image') {
+            steps {
+                sh '''#!/bin/sh
+                set -eux
+
+                docker build \
+                    -f frontend/Dockerfile.prod \
+                    -t frontend-app:prod \
+                    frontend
+                '''
+            }
+        }
         stage('Unit Tests') { steps { echo 'Maqueta: npm test' } }
         stage('API Tests') { steps { echo 'Maqueta: Newman' } }
         stage('E2E Tests') { steps { echo 'Maqueta: Cypress' } }
