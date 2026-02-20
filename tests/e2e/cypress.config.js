@@ -3,7 +3,11 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   e2e: {
     baseUrl: 'http://frontend', 
-    setupNodeEvents(on, config) {},
+    
+    specPattern: '*.cy.js',
+    
+    supportFile: false,
+    
     video: false, 
   },
 });

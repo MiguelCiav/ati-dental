@@ -2,7 +2,6 @@ FROM cypress/included:latest
 
 WORKDIR /e2e
 
-COPY cypress.config.js .
-COPY cypress ./cypress
+COPY . .
 
 CMD ["cypress", "run"]
