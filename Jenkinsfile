@@ -37,7 +37,23 @@ pipeline {
         }
         stage('Unit Tests') { steps { echo 'Maqueta: npm test' } }
         stage('API Tests') { steps { echo 'Maqueta: Newman' } }
-        stage('E2E Tests') { steps { echo 'Maqueta: Cypress' } }
+        stage('E2E Tests') {
+            steps {
+                script {
+                    try {
+                        echo 'Construyendo imagen de Cypress...'
+                        sh 'docker build -t atidental-e2e -f tests/e2e/Dockerfile.e2e .'
+                        
+                        echo 'Ejecutando pruebas de Cypress...'
+                        sh 'docker run --rm --network ati-network atidental-e2e'
+                        
+                    } catch (Exception e) {
+                        echo 'Aviso: contenedor de Cypress falló'
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                }
+            }
+        }
         stage('Performance') { steps { echo 'Maqueta: JMeter' } }
     }
     post {
