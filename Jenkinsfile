@@ -39,7 +39,20 @@ pipeline {
         }
         stage('E2E Tests') { steps { echo 'Maqueta: Cypress' } }
         stage('Performance') { 
-            
+            steps {
+                script {
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+
+                        // 1. Construir la imagen de JMeter
+                        sh "docker build -t ${PERF_TEST_IMAGE} -f tests/performance/Dockerfile.perf tests/performance"
+                        // 2. Ejecutar JMeter
+                        sh "docker run --rm ${PERF_TEST_IMAGE} -n -t plan_de_pruebas.jmx -l resultados.jtl"
+
+                        echo 'Pruebas de rendimiento ejecutadas. Si hay fallos, el pipeline se marcará como UNSTABLE pero continuará con las siguientes etapas.'
+                    }
+                }
+
+            }
         }
     }
     post {
