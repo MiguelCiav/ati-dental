@@ -35,7 +35,16 @@ pipeline {
                 '''
             }
         }
-        stage('Unit Tests') { steps { echo 'Maqueta: npm test' } }
+        stage('Unit Tests') {
+            steps {
+                echo '>>> [Unit Tests] Ejecutando pruebas unitarias con Jest...'
+                sh '''#!/bin/sh
+                set -eux
+                docker run --rm frontend-app:build npm test
+                '''
+                echo '>>> [Unit Tests] \u2705 Todas las pruebas unitarias pasaron.'
+            }
+        }
         stage('API Tests') { steps { echo 'Maqueta: Newman' } }
         stage('E2E Tests') { steps { echo 'Maqueta: Cypress' } }
         stage('Performance') { steps { echo 'Maqueta: JMeter' } }

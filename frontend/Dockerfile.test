@@ -1,0 +1,10 @@
+# ============================================================
+# Dockerfile.test — Stage: Ejecución de pruebas unitarias (Jest)
+# Reutiliza frontend-app:build que ya tiene Node, código fuente
+# y node_modules instalados. No reinstala nada.
+# ============================================================
+FROM frontend-app:build
+
+# Sobreescribir el CMD para ejecutar Jest en modo non-interactive
+# --watchAll=false garantiza que el proceso termina al finalizar los tests
+CMD ["npm", "test"]
