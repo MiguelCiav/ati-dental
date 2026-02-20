@@ -30,7 +30,7 @@ pipeline {
                         sh "docker build -t ${API_TEST_IMAGE} -f tests/api/Dockerfile.test tests/api"
                         
                         // 2. Ejecutar Newman
-                        sh "docker run --rm ${API_TEST_IMAGE} run collection.json"
+                        sh "docker run --rm --network ati-dental_ati-network ${API_TEST_IMAGE} run collection.json"
 
                         echo 'API Tests ejecutados. Si hay fallos, el pipeline se marcará como UNSTABLE pero continuará con las siguientes etapas.'
                     }
