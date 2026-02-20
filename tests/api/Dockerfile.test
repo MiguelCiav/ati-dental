@@ -1,0 +1,11 @@
+# Imagen base ligera sugerida por el laboratorio 
+FROM postman/newman:alpine
+
+# Directorio de trabajo para las colecciones
+WORKDIR /etc/newman
+
+# Copiamos los archivos de la colección y ambiente
+COPY . .
+
+# Definimos el entrypoint para ejecutar newman directamente
+ENTRYPOINT ["newman"]

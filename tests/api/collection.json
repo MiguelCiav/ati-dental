@@ -1,0 +1,35 @@
+{
+	"info": {
+		"name": "Prueba",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validar API Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () { pm.response.to.have.status(200); });",
+							"pm.test('El ambiente es development', function () { pm.expect(pm.response.json().environment).to.eql('development'); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api:3000/",
+					"protocol": "http",
+					"host": [ "api" ],
+					"port": "3000",
+					"path": [ "" ]
+				}
+			},
+			"response": []
+		}
+	]
+}
