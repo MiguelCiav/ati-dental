@@ -42,7 +42,7 @@ pipeline {
                 script {
                     try {
                         echo 'Construyendo imagen de Cypress...'
-                        sh 'docker build -t atidental-e2e -f tests/e2e/Dockerfile.e2e .'
+                        sh 'docker build -t atidental-e2e -f tests/e2e/Dockerfile.e2e tests/e2e'
                         
                         echo 'Ejecutando pruebas de Cypress...'
                         sh 'docker run --rm --network ati-network atidental-e2e'
