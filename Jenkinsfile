@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
     environment {
-        API_TEST_IMAGE = "ati-dental-api-test"
+        API_TEST_IMAGE = "ati-dental_ati-network"
         PERF_TEST_IMAGE = "ati-dental-perf-test"
     }
 
