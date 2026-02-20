@@ -45,7 +45,7 @@ pipeline {
                         sh 'docker build -t atidental-e2e -f tests/e2e/Dockerfile.e2e tests/e2e'
                         
                         echo 'Ejecutando pruebas de Cypress...'
-                        sh 'docker run --rm ati-dental_ati-network atidental-e2e'
+                        sh 'docker run --rm --network ati-dental_ati-network atidental-e2e'
                         
                     } catch (Exception e) {
                         echo 'Aviso: contenedor de Cypress falló'
