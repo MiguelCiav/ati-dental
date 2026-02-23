@@ -6,19 +6,40 @@
   align-items: center;
   padding: 0 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  gap: 16px;
+}
+
+.hamburger-button {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #5e3a8f;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger-button:hover {
+  background-color: #f5f5f5;
+}
+
+.hamburger-button:focus {
+  outline: 2px solid #5e3a8f;
+  outline-offset: 2px;
 }
 
 .breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   font-size: 14px;
 }
 
 .breadcrumb-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .breadcrumb-item {
@@ -27,8 +48,9 @@
   transition: color 0.2s ease;
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .breadcrumb-item:hover {
@@ -51,6 +73,29 @@
 }
 
 .breadcrumb-separator {
-  color: #999;
+  color: #ccc;
   flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .hamburger-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .breadcrumbs {
+    font-size: 13px;
+    overflow-x: auto;
+    flex: 1;
+  }
+
+  .breadcrumb-item {
+    padding: 4px;
+    font-size: 13px;
+  }
 }

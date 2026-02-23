@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { List, UserPlus, Cog, MessageCircleQuestionMark } from 'lucide-react';
+import { List, UserPlus, User, Phone, X } from 'lucide-react';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
 
   const menuItems = [
@@ -21,23 +21,42 @@ const Sidebar = () => {
     {
       id: 'profile',
       label: 'Perfil e Idioma',
-      icon: Cog,
+      icon: User,
       path: '/profile',
     },
     {
       id: 'contact',
       label: 'Contacto',
-      icon: MessageCircleQuestionMark,
+      icon: Phone,
       path: '/contact',
     },
   ];
 
   const isActive = (path) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+    if (location.pathname === path) return true;
+    
+    const hasExactMatch = menuItems.some(item => item.path === location.pathname);
+    if (hasExactMatch) return false;
+    
+    const hasMoreSpecificMatch = menuItems.some(
+      item => item.path !== path && 
+      item.path.startsWith(path + '/') && 
+      location.pathname.startsWith(item.path)
+    );
+    
+    if (hasMoreSpecificMatch) return false;
+    
+    return location.pathname.startsWith(path + '/');
+  };
+
+  const handleLinkClick = () => {
+    if (window.innerWidth <= 768) {
+      onClose();
+    }
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
         <div className="sidebar-logo">
           <div className="logo-icon">
@@ -47,6 +66,9 @@ const Sidebar = () => {
           </div>
           <span className="logo-text">ATI Dental</span>
         </div>
+        <button className="close-button" onClick={onClose} aria-label="Close menu">
+          <X size={24} />
+        </button>
       </div>
 
       <nav className="sidebar-nav">
@@ -58,6 +80,7 @@ const Sidebar = () => {
                 <Link
                   to={item.path}
                   className={`sidebar-menu-item ${isActive(item.path) ? 'active' : ''}`}
+                  onClick={handleLinkClick}
                 >
                   <Icon className="menu-icon" size={20} />
                   <span className="menu-label">{item.label}</span>
