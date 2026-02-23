@@ -223,9 +223,8 @@ pipeline {
                 sh """#!/bin/sh
                 set -ex
 
-                # Detener y eliminar la versión anterior si existe
-                docker stop ${PROD_CONTAINER} || true
-                docker rm   ${PROD_CONTAINER} || true
+                # Detener y eliminar la versión anterior si existe (--force es atómico)
+                docker rm -f ${PROD_CONTAINER} || true
 
                 # Arrancar la nueva versión — el contenedor queda corriendo
                 docker run -d \\
