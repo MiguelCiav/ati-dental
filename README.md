@@ -68,3 +68,23 @@ La solución está compuesta por tres capas principales:
 
 ---
 
+## Entorno de Desarrollo
+
+1. Para desarrollar y ver los cambios en tiempo real, ejecuta el comando:
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+2. El frontend será accesible desde http://localhost:5173/, el backend desde http://localhost:5000/ y la base de datos desde localhost:27017. Cualquier cambio en el backend o frontend se verá reflejado en tiempo real.
+
+
+## Jenkins
+
+1. Para hacer pruebas y probarlas en un pipeline de Jenkins, hay un compose separado, se ejecuta con:
+```bash
+docker compose -f docker-compose.jenkins.yml up -d
+```
+
+2. Luego de que se haya levantado el entorno, puedes acceder a Jenkins desde http://localhost:8087/.
+
+Si quieres instalar de cero el Jenkins, puedes seguir las instrucciones del archivo que está en jenkins/README.md.

@@ -7,7 +7,7 @@ Sigan estos pasos para replicar el entorno de **Integración Continua (CI)** en 
 Asegúrense de estar en la raíz del proyecto y en la rama `develop`. Ejecuten en su terminal:
 
 ```bash
-docker compose up -d --build
+docker compose -f docker-compose.jenkins.yml up -d
 ```
 
 ### 2. Desbloqueo Inicial
@@ -17,7 +17,7 @@ docker compose up -d --build
 `docker logs jenkins_server`.
 3. Peguen la clave y seleccionen **"Install suggested plugins"** (Si hay errores, vean el paso 3).
 4. Ingresen sus datos de usuario, contraseña, correo, etc...
-5. Suele ser necesario reiniciar el contenedor después de instalar los plugins, una vez que estén instalados y hayan ingresado sus datos, reinicien el contenedor con `docker compose restart`.
+5. Suele ser necesario reiniciar el contenedor después de instalar los plugins, una vez que estén instalados y hayan ingresado sus datos, reinicien el contenedor con `docker compose -f docker-compose.jenkins.yml restart`.
 
 ### 3. En caso de que hayan errores al instalar plugins
 
@@ -41,9 +41,4 @@ Sigan esta ruta exacta para que puedan usar el Jenkinsfile, primero vayan al hom
 
 ### Comandos de Verificación
 
-Si todo está bien configurado, al hacer clic en **"Construir ahora"** (Build Now), verán cómo se ejecutan automáticamente los 7 stages de nuestra maqueta:
-
-* **Checkout:** Descarga el código.
-* **Docker Check:** Valida que Jenkins pueda hablar con Docker.
-* **Build/Tests:** Stages definidos en nuestro cerebro del pipeline.
-* **Cleanup:** Al finalizar, el sistema ejecutará `docker system prune -f` para que sus discos duros no sufran.
+Si todo está bien configurado, al hacer clic en **"Construir ahora"** (Build Now), verán cómo se ejecutan automáticamente los stages de la maqueta.
