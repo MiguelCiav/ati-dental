@@ -1,51 +1,64 @@
-services:
-  # --- INFRAESTRUCTURA DE AUTOMATIZACIÓN (TAREA JENKINS) ---
-  jenkins:
-    build: ./jenkins
-    container_name: jenkins_server
-    privileged: true
-    user: root
-    ports:
-      - "8087:8080" # Acceso web por el puerto 8085
-      - "50000:50000" # Comunicación de agentes
-    volumes:
-      - ./jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - ati-network
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+# =============================================================================
+# docker-compose.yml — Aplicación ATI-Dental
+#
+# USO PARA DESARROLLO LOCAL:
+#   docker compose up -d
+#
+# USO DESDE JENKINS (pipeline):
+#   docker compose -p ati-dental up -d --build
+#   docker compose -p ati-dental down
+#
+# Jenkins gestiona el ciclo de vida de estos contenedores durante el pipeline.
+# El nombre de proyecto (-p ati-dental) garantiza que la red siempre se llame
+# "ati-dental_app-network" sin importar el nombre de la carpeta en el host.
+# =============================================================================
 
-  # --- APLICACIÓN ATI-DENTAL ---
+services:
+  # ---------------------------------------------------------------------------
+  # FRONTEND — Servidor NGINX con la app compilada
+  # Puerto 8080 del host → 80 del contenedor (evita conflicto con API)
+  # ---------------------------------------------------------------------------
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: ati_frontend
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - api
     networks:
-      - ati-network
+      - app-network
+    restart: unless-stopped
 
+  # ---------------------------------------------------------------------------
+  # API — Backend Node.js
+  # Puerto 3001 del host → 3000 del contenedor
+  # (El 3000 del host queda libre para otros servicios)
+  # ---------------------------------------------------------------------------
   api:
     build:
       context: ./backend/server
       dockerfile: Dockerfile
+    container_name: ati_api
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin
+      - NODE_ENV=production
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
-      - ati-network
+      - app-network
+    restart: unless-stopped
 
+  # ---------------------------------------------------------------------------
+  # BASE DE DATOS — MongoDB 6
+  # ---------------------------------------------------------------------------
   mongo:
     image: mongo:6.0
-    container_name: mongodb_server
-    restart: always
+    container_name: ati_mongo
     ports:
       - "27017:27017"
     environment:
@@ -54,14 +67,20 @@ services:
     volumes:
       - mongo-data:/data/db
     networks:
-      - ati-network
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
-# Definición de volúmenes y redes
 volumes:
   mongo-data:
-  jenkins_data:
-    # Persistencia para Jenkins
+    name: ati-dental_mongo-data
 
 networks:
-  ati-network:
+  app-network:
+    name: ati-dental_app-network
     driver: bridge
