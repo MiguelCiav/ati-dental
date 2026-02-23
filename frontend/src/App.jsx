@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
-import { Modal } from './components'
+import { Modal, InputField, Button } from './components'
+import { Mail, Lock, Plus, LogIn } from 'lucide-react'
 import './App.css'
 
 function App() {
@@ -20,39 +21,106 @@ function App() {
 
 const PatientsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="page-container">
-      <h1>Listado de Pacientes</h1>
-      <p>Aquí se mostrará el listado de pacientes.</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <h1>Listado de Pacientes</h1>
+        <Button variant="primary" icon={Plus} onClick={() => setIsModalOpen(true)}>
+          Nuevo Paciente
+        </Button>
+      </div>
       
-      <button 
-        className="primary" 
-        onClick={() => setIsModalOpen(true)}
-        style={{ marginTop: '16px' }}
-      >
-        Ver ejemplo de Modal
-      </button>
+      <p style={{ marginBottom: '32px', color: '#666' }}>Aquí se mostrará el listado de pacientes.</p>
+
+      <div style={{ maxWidth: '500px' }}>
+        <h3 style={{ marginBottom: '20px', color: '#333' }}>Ejemplo de Componentes</h3>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <InputField
+            label="Correo Electrónico"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="ejemplo@correo.com"
+            icon={Mail}
+          />
+
+          <InputField
+            label="Contraseña"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+            icon={Lock}
+            helperText="¿Olvidaste tu contraseña?"
+          />
+
+          <InputField
+            label="Nombre"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="John"
+          />
+
+          <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+            <Button variant="primary" fullWidth>
+              Iniciar Sesión
+            </Button>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <Button variant="secondary" fullWidth>
+              Google
+            </Button>
+            <Button variant="secondary" fullWidth>
+              Microsoft
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Ejemplo de Modal"
+        title="Ejemplo de Modal con Formulario"
         size="medium"
         footer={
           <>
-            <button onClick={() => setIsModalOpen(false)}>
+            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
               Cancelar
-            </button>
-            <button className="primary" onClick={() => setIsModalOpen(false)}>
-              Aceptar
-            </button>
+            </Button>
+            <Button variant="primary" onClick={() => setIsModalOpen(false)}>
+              Guardar
+            </Button>
           </>
         }
       >
-        <p>Este es un modal genérico y reutilizable.</p>
-        <p>Puedes personalizarlo con diferentes tamaños: small, medium, large, full.</p>
-        <p>También puedes añadir cualquier contenido en el body y botones en el footer.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <InputField
+            label="Correo Electrónico"
+            type="email"
+            placeholder="ejemplo@correo.com"
+            icon={Mail}
+          />
+          <InputField
+            label="Nombre Completo"
+            placeholder="John Smith"
+            required
+          />
+        </div>
       </Modal>
     </div>
   );

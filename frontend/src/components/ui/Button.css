@@ -1,0 +1,152 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  position: relative;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-small {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.button-medium {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+.button-large {
+  padding: 14px 28px;
+  font-size: 16px;
+}
+
+.button-primary {
+  background: linear-gradient(180deg, #5e3a8f 0%, #4a2d73 100%);
+  color: white;
+  border-color: #5e3a8f;
+  box-shadow: 0 2px 4px rgba(94, 58, 143, 0.2);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #4a2d73 0%, #3a2360 100%);
+  box-shadow: 0 4px 8px rgba(94, 58, 143, 0.3);
+  transform: translateY(-1px);
+}
+
+.button-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(94, 58, 143, 0.2);
+}
+
+.button-secondary {
+  background: white;
+  color: #333;
+  border-color: #e0e0e0;
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #5e3a8f;
+  color: #5e3a8f;
+}
+
+.button-secondary:active:not(:disabled) {
+  background: #eeeeee;
+}
+
+.button-outline {
+  background: transparent;
+  color: #5e3a8f;
+  border-color: #5e3a8f;
+}
+
+.button-outline:hover:not(:disabled) {
+  background: rgba(94, 58, 143, 0.05);
+  border-color: #4a2d73;
+}
+
+.button-outline:active:not(:disabled) {
+  background: rgba(94, 58, 143, 0.1);
+}
+
+.button-ghost {
+  background: transparent;
+  color: #666;
+  border-color: transparent;
+}
+
+.button-ghost:hover:not(:disabled) {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.button-ghost:active:not(:disabled) {
+  background: #eeeeee;
+}
+
+.button-danger {
+  background: #d32f2f;
+  color: white;
+  border-color: #d32f2f;
+}
+
+.button-danger:hover:not(:disabled) {
+  background: #b71c1c;
+  border-color: #b71c1c;
+}
+
+.button-full-width {
+  width: 100%;
+}
+
+.button-icon {
+  flex-shrink: 0;
+}
+
+.button-text {
+  flex: 1;
+}
+
+.button-loading {
+  pointer-events: none;
+}
+
+.button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.button-secondary .button-spinner,
+.button-outline .button-spinner,
+.button-ghost .button-spinner {
+  border-color: rgba(94, 58, 143, 0.3);
+  border-top-color: #5e3a8f;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button:focus-visible {
+  outline: 2px solid #5e3a8f;
+  outline-offset: 2px;
+}
