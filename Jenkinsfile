@@ -154,9 +154,17 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        // Limpiar resultados anteriores para que JMeter no falle con
-                        // "folder is not empty" en ejecuciones consecutivas del pipeline
-                        sh 'rm -rf test-results/performance && mkdir -p test-results/performance'
+                        // El directorio results/report fue creado por JMeter como root
+                        // dentro del contenedor. El usuario jenkins del host NO tiene
+                        // permisos para borrarlo con rm -rf. Usamos un contenedor Alpine
+                        // (también root) para hacer la limpieza correctamente.
+                        sh 'mkdir -p test-results/performance'
+                        sh """
+                        docker run --rm \\
+                            -v \$(pwd)/test-results/performance:/tests/results \\
+                            alpine \\
+                            sh -c 'rm -rf /tests/results/report /tests/results/resultados.jtl'
+                        """
                         sh "docker build -t ${PERF_IMAGE} -f tests/performance/Dockerfile.perf tests/performance"
                         sh """
                         docker run --rm \\
