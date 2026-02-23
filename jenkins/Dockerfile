@@ -1,5 +1,5 @@
 # Usamos la versión estable recomendada por el laboratorio
-FROM jenkins/jenkins:2.504-lts
+FROM jenkins/jenkins:2.541.2-lts
 USER root
 
 # --- Paso 1: Dependencias base ---
