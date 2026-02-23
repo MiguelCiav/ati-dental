@@ -17,6 +17,8 @@ const InputField = ({
   autoComplete,
   showPasswordToggle = true,
   fullWidth = true,
+  multiline = false,
+  rows = 4,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +27,8 @@ const InputField = ({
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const InputComponent = multiline ? 'textarea' : 'input';
 
   return (
     <div className={`input-field ${fullWidth ? 'full-width' : ''}`}>
@@ -35,28 +39,29 @@ const InputField = ({
         </label>
       )}
       
-      <div className={`input-wrapper ${error ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
+      <div className={`input-wrapper ${error ? 'error' : ''} ${disabled ? 'disabled' : ''} ${multiline ? 'textarea-wrapper' : ''}`}>
         {Icon && (
           <div className="input-icon">
             <Icon size={20} />
           </div>
         )}
         
-        <input
+        <InputComponent
           id={name}
           name={name}
-          type={inputType}
+          type={multiline ? undefined : inputType}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
           required={required}
           autoComplete={autoComplete}
-          className={`input-control ${Icon ? 'has-icon' : ''} ${type === 'password' && showPasswordToggle ? 'has-password-toggle' : ''}`}
+          rows={multiline ? rows : undefined}
+          className={`input-control ${Icon ? 'has-icon' : ''} ${type === 'password' && showPasswordToggle ? 'has-password-toggle' : ''} ${multiline ? 'textarea-control' : ''}`}
           {...props}
         />
         
-        {type === 'password' && showPasswordToggle && (
+        {type === 'password' && showPasswordToggle && !multiline && (
           <button
             type="button"
             className="password-toggle"
