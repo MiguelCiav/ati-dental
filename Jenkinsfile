@@ -19,8 +19,8 @@ pipeline {
         APP_NETWORK     = "ati-dental_app-network"
 
         // Imágenes construidas durante el pipeline
-        FRONTEND_BUILD_IMAGE = "ati-dental-frontend:build"
-        FRONTEND_PROD_IMAGE  = "ati-dental-frontend:prod"
+        FRONTEND_BUILD_IMAGE = "frontend-app:build"
+        FRONTEND_PROD_IMAGE  = "frontend-app:prod"
         API_TEST_IMAGE       = "ati-dental-api-test"
         E2E_IMAGE            = "ati-dental-e2e"
         PERF_IMAGE           = "ati-dental-perf"
