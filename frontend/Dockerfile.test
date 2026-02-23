@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Instala todas las dependencias (dev incluidas, necesarias para Jest)
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 
