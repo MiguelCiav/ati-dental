@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Layout from './layouts/Layout'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR, ok
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Navigate to="/patients" replace />} />
+        <Route path="patients" element={<PatientsPage />} />
+        <Route path="patients/register" element={<RegisterPatientPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="contact" element={<ContactPage />} />
+      </Route>
+    </Routes>
   )
 }
+
+const PatientsPage = () => (
+  <div className="page-container">
+    <h1>Listado de Pacientes</h1>
+    <p>Aquí se mostrará el listado de pacientes.</p>
+  </div>
+)
+
+const RegisterPatientPage = () => (
+  <div className="page-container">
+    <h1>Registrar Paciente</h1>
+    <p>Formulario de registro de pacientes.</p>
+  </div>
+)
+
+const ProfilePage = () => (
+  <div className="page-container">
+    <h1>Perfil e Idioma</h1>
+    <p>Configuración de perfil y preferencias de idioma.</p>
+  </div>
+)
+
+const ContactPage = () => (
+  <div className="page-container">
+    <h1>Contacto</h1>
+    <p>Información de contacto.</p>
+  </div>
+)
 
 export default App
