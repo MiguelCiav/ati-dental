@@ -1,22 +1,35 @@
 # ============================================================
-# Dockerfile.prod — Stage: Imagen de producción (Nginx)
-# Imagen resultante: frontend-app:prod
-# Propósito: servir los archivos estáticos generados por el build.
-# Usa multi-stage: toma el /app/dist desde frontend-app:build
-# (la imagen debe existir localmente antes de correr este build).
+# Dockerfile.prod — Build de producción autosuficiente (multi-stage)
+#
+# Stage 1 (builder): instala dependencias y compila el bundle con Vite.
+# Stage 2 (runtime): copia el /dist al Nginx ligero y lo sirve.
+#
+# Al ser un multi-stage real, no necesita ninguna imagen externa
+# pre-construida (como frontend-app:build), por lo que funciona
+# correctamente con Docker BuildKit activado.
 # ============================================================
 
-# --- Stage 1: tomamos los artefactos de la imagen de build ---
-FROM frontend-app:build AS build
+# --- Stage 1: Compilación ---
+FROM node:20-alpine AS builder
 
-# --- Stage 2: imagen final ligera con Nginx ---
+WORKDIR /app
+
+# Aprovecha la caché de capas: si package.json no cambia, npm install se reutiliza
+COPY package*.json ./
+RUN npm install
+
+# Copia el resto del código y compila con Vite → /app/dist
+COPY . .
+RUN npm run build
+
+# --- Stage 2: Imagen de producción ligera con Nginx ---
 FROM nginx:alpine
 
-# Limpiamos la página por defecto de Nginx
+# Elimina la página por defecto de Nginx
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copiamos el bundle compilado directamente desde el stage anterior
-COPY --from=build /app/dist /usr/share/nginx/html/
+# Copia el bundle compilado desde el stage anterior
+COPY --from=builder /app/dist /usr/share/nginx/html/
 
 # Configuración de Nginx para SPA (React Router compatible)
 COPY nginx.conf /etc/nginx/conf.d/default.conf

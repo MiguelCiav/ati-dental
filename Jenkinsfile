@@ -154,8 +154,9 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        // Carpeta en el workspace de Jenkins para guardar resultados
-                        sh 'mkdir -p test-results/performance'
+                        // Limpiar resultados anteriores para que JMeter no falle con
+                        // "folder is not empty" en ejecuciones consecutivas del pipeline
+                        sh 'rm -rf test-results/performance && mkdir -p test-results/performance'
                         sh "docker build -t ${PERF_IMAGE} -f tests/performance/Dockerfile.perf tests/performance"
                         sh """
                         docker run --rm \\
