@@ -16,7 +16,8 @@ WORKDIR /app
 
 # Aprovecha la caché de capas: si package.json no cambia, npm install se reutiliza
 COPY package*.json ./
-RUN npm install
+# npm ci usa package-lock.json exactamente → builds reproducibles en CI
+RUN npm ci
 
 # Copia el resto del código y compila con Vite → /app/dist
 COPY . .

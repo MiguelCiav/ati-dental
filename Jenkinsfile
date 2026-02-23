@@ -18,12 +18,13 @@ pipeline {
         COMPOSE_PROJECT = "ati-dental"
         APP_NETWORK     = "ati-dental_app-network"
 
-        // Imágenes construidas durante el pipeline
-        FRONTEND_BUILD_IMAGE = "frontend-app:build"
-        FRONTEND_PROD_IMAGE  = "frontend-app:prod"
-        API_TEST_IMAGE       = "ati-dental-api-test"
-        E2E_IMAGE            = "ati-dental-e2e"
-        PERF_IMAGE           = "ati-dental-perf"
+        // Imágenes construidas durante el pipeline — incluyen BUILD_NUMBER para
+        // evitar colisiones si dos ramas corren el pipeline en paralelo.
+        FRONTEND_BUILD_IMAGE = "frontend-app:build-${env.BUILD_NUMBER}"
+        FRONTEND_PROD_IMAGE  = "frontend-app:prod-${env.BUILD_NUMBER}"
+        API_TEST_IMAGE       = "ati-dental-api-test:${env.BUILD_NUMBER}"
+        E2E_IMAGE            = "ati-dental-e2e:${env.BUILD_NUMBER}"
+        PERF_IMAGE           = "ati-dental-perf:${env.BUILD_NUMBER}"
 
         // Nombre del contenedor de producción que quedará corriendo
         PROD_CONTAINER = "prod-ati-dental"

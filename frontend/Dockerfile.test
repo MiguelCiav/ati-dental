@@ -1,10 +1,19 @@
 # ============================================================
-# Dockerfile.test — Stage: Ejecución de pruebas unitarias (Jest)
-# Reutiliza frontend-app:build que ya tiene Node, código fuente
-# y node_modules instalados. No reinstala nada.
+# Dockerfile.test — Ejecución de pruebas unitarias (Jest)
+#
+# Imagen autosuficiente: instala todas las dependencias de
+# desarrollo (incluyendo Jest) y ejecuta las pruebas.
+# No depende de ninguna imagen local pre-construida.
 # ============================================================
-FROM frontend-app:build
+FROM node:20-alpine
 
-# Sobreescribir el CMD para ejecutar Jest en modo non-interactive
-# --watchAll=false garantiza que el proceso termina al finalizar los tests
-CMD ["npm", "test"]
+WORKDIR /app
+
+# Instala todas las dependencias (dev incluidas, necesarias para Jest)
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+
+# --watchAll=false garantiza que Jest termina tras correr todas las pruebas
+CMD ["npm", "test", "--", "--watchAll=false"]

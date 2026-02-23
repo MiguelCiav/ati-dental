@@ -1,5 +1,5 @@
 # Imagen base ligera sugerida por el laboratorio 
-FROM postman/newman:alpine
+FROM postman/newman:6-alpine
 
 # Directorio de trabajo para las colecciones
 WORKDIR /etc/newman
