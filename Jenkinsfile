@@ -38,6 +38,9 @@ pipeline {
         // -----------------------------------------------------------------------
         stage('Checkout') {
             steps {
+                // Limpia el workspace antes de cada build para evitar archivos
+                // cacheados de ejecuciones anteriores (requiere plugin Workspace Cleanup)
+                cleanWs()
                 checkout scm
             }
         }
