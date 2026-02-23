@@ -91,7 +91,11 @@ pipeline {
             steps {
                 echo '>>> Levantando entorno completo (frontend + api + mongo)...'
                 sh """
-                docker compose -p ${COMPOSE_PROJECT} -f docker-compose.yml \\
+                docker compose -p ${COMPOSE_PROJECT} -f docker-compose.yml \
+                    down --remove-orphans || true
+                """
+                sh """
+                docker compose -p ${COMPOSE_PROJECT} -f docker-compose.yml \
                     up -d --build --wait
                 """
                 // --wait espera a que todos los healthchecks pasen antes de continuar

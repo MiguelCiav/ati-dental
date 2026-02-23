@@ -10,6 +10,9 @@
 # y Jenkins la gestiona internamente durante el pipeline.
 # =============================================================================
 
+# Nombre de proyecto explícito — evita colisión con docker-compose.yml (ati-dental)
+name: ati-dental-ci
+
 services:
   jenkins:
     build: ./jenkins
