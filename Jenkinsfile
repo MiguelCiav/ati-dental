@@ -215,7 +215,8 @@ pipeline {
         // Arranca el frontend compilado en el puerto 8080 del host.
         // El contenedor se llama prod-ati-dental y NO se elimina al final
         // (queda accesible después del pipeline).
-        // Puerto: 8080 del host → 80 del contenedor (Nginx)
+        // Puerto: 8081 del host → 80 del contenedor (Nginx)
+        // (8080 reservado, 8087 ocupado por Jenkins en el servidor CI)
         // -----------------------------------------------------------------------
         stage('Deploy Production') {
             steps {
@@ -230,10 +231,10 @@ pipeline {
                 docker run -d \\
                     --name ${PROD_CONTAINER} \\
                     --restart unless-stopped \\
-                    -p 8080:80 \\
+                    -p 8081:80 \\
                     ${FRONTEND_PROD_IMAGE}
 
-                echo '>>> ✅ Producción desplegada en http://localhost:8080'
+                echo '>>> ✅ Producción desplegada en http://localhost:8081'
                 """
             }
         }

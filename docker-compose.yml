@@ -16,7 +16,7 @@
 services:
   # ---------------------------------------------------------------------------
   # FRONTEND — Servidor NGINX con la app compilada
-  # Puerto 8080 del host → 80 del contenedor (evita conflicto con API)
+  # Puerto 8087 del host → 80 del contenedor (evita conflicto con API)
   # ---------------------------------------------------------------------------
   frontend:
     build:
@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: ati_frontend
     ports:
-      - "8080:80"
+      - "8087:80"
     depends_on:
       - api
     networks:
