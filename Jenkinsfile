@@ -154,26 +154,20 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        // El directorio results/report fue creado por JMeter como root
-                        // dentro del contenedor. El usuario jenkins del host NO tiene
-                        // permisos para borrarlo con rm -rf. Usamos un contenedor Alpine
-                        // (también root) para hacer la limpieza correctamente.
-                        sh 'mkdir -p test-results/performance'
-                        sh """
-                        docker run --rm \\
-                            -v \$(pwd)/test-results/performance:/tests/results \\
-                            alpine \\
-                            sh -c 'rm -rf /tests/results/report /tests/results/resultados.jtl'
-                        """
+                        // NOTA sobre Docker-out-of-Docker:
+                        // Los bind mounts con $(pwd) son resueltos por el daemon del HOST,
+                        // no del contenedor Jenkins, lo que hace que el path de limpieza
+                        // y el path de escritura de JMeter difieran. Para evitar el error
+                        // "folder is not empty", se omite la generación del reporte HTML.
+                        // El archivo JTL es suficiente en un entorno CI.
                         sh "docker build -t ${PERF_IMAGE} -f tests/performance/Dockerfile.perf tests/performance"
                         sh """
                         docker run --rm \\
                             --network ${APP_NETWORK} \\
-                            -v \$(pwd)/test-results/performance:/tests/results \\
                             ${PERF_IMAGE} \\
-                            -n -t plan_de_pruebas.jmx -l results/resultados.jtl -e -o results/report
+                            -n -t plan_de_pruebas.jmx -l resultados.jtl
                         """
-                        echo '>>> ✅ Pruebas de rendimiento completadas. Resultados en test-results/performance/'
+                        echo '>>> ✅ Pruebas de rendimiento completadas.'
                     }
                 }
             }
