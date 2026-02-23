@@ -4,6 +4,7 @@ pipeline {
     environment {
         API_TEST_IMAGE = "ati-dental_ati-network"
         PERF_TEST_IMAGE = "ati-dental-perf-test"
+        FRONTEND_IMAGE = "frontend-app"
     }
 
     stages {
@@ -98,6 +99,16 @@ pipeline {
                     }
                 }
 
+            }
+        }
+        stage('Deploy Production') {
+            steps {
+                sh '''#!/bin/sh
+                set -ex
+                docker stop prod-app || true
+                docker rm prod-app || true
+                docker run -d --name prod-app -p 3000:80 ${FRONTEND_IMAGE}:prod
+                '''
             }
         }
     }
