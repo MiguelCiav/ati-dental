@@ -1,10 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import '@testing-library/jest-dom';
 import Login from './Login';
-
-// Mocks for lucide-react icons because they might cause issues if not mocked
 jest.mock('lucide-react', () => ({
     Mail: () => <svg data-testid="mail-icon" />,
     EyeOff: () => <svg data-testid="eye-off-icon" />
