@@ -1,0 +1,75 @@
+.profile-language-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.language-description {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.language-options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .language-options-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.language-option-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #fff;
+    min-height: 84px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.language-option-card:hover {
+    border-color: #b39ddb;
+}
+
+.language-option-card.selected {
+    border-color: #5e3a8f;
+    border-width: 2px;
+    padding: 15px;
+    /* Compensa el borde que ahora es de 2px para evitar saltos */
+}
+
+.language-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.language-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.check-icon {
+    color: #5e3a8f;
+    fill: #5e3a8f;
+}
+
+.language-option-card.selected .check-icon {
+    fill: #5e3a8f;
+    color: white;
+}
+
+.language-hint {
+    font-size: 13px;
+    color: #888;
+    margin: 0;
+}
