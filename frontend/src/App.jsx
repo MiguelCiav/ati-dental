@@ -4,10 +4,12 @@ import Layout from './layouts/Layout'
 import { Modal, InputField, Button, Card } from './components'
 import { Mail, Lock, Plus, LogIn, User, Phone, Edit } from 'lucide-react'
 import './App.css'
+import Login from './auth/Login'
 
 function App() {
   return (
     <Routes>
+      <Route path="/login" element={<Login />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="/patients" replace />} />
         <Route path="patients" element={<PatientsPage />} />
@@ -39,12 +41,12 @@ const PatientsPage = () => {
           Nuevo Paciente
         </Button>
       </div>
-      
+
       <p style={{ marginBottom: '32px', color: '#666' }}>Aquí se mostrará el listado de pacientes.</p>
 
       <div style={{ maxWidth: '500px' }}>
         <h3 style={{ marginBottom: '20px', color: '#333' }}>Ejemplo de Componentes</h3>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <InputField
             label="Correo Electrónico"
@@ -148,8 +150,8 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <Card 
-        title="Información Personal" 
+      <Card
+        title="Información Personal"
         icon={User}
         headerAction={
           <Button variant="outline" size="small" icon={Edit}>
