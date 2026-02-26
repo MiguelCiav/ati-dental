@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Mail, EyeOff } from 'lucide-react';
 import { InputField, Button } from '../components';
 import toothSvg from '../assets/tooth.svg';
@@ -6,6 +6,61 @@ import loginBackground from '../assets/login_background.png';
 import './Login.css';
 
 const Login = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const [errors, setErrors] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = { email: '', password: '' };
+
+        if (!formData.email) {
+            newErrors.email = 'El correo electrónico es requerido';
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'El formato del correo electrónico no es válido';
+            isValid = false;
+        }
+
+        if (!formData.password) {
+            newErrors.password = 'La contraseña es requerida';
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            console.log('Formulario válido. Iniciando sesión...', formData);
+            // TODO: Integrar lógica de autenticación con el backend API aquí
+        }
+    };
+
     return (
         <div className="login-container">
             {/* Left Panel */}
@@ -44,15 +99,18 @@ const Login = () => {
                         <p className="login-subtitle">Ingresa tus credenciales para acceder a tu panel</p>
                     </div>
 
-                    <form className="login-form">
+                    <form className="login-form" onSubmit={handleSubmit}>
                         <div>
                             <InputField
                                 label="Correo electrónico"
                                 type="email"
                                 name="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="ejemplo@correo.com"
                                 icon={Mail}
                                 required
+                                error={errors.email}
                             />
                         </div>
 
@@ -63,14 +121,17 @@ const Login = () => {
                             <InputField
                                 type="password"
                                 name="password"
+                                value={formData.password}
+                                onChange={handleChange}
                                 placeholder="••••••••"
                                 icon={EyeOff}
                                 required
+                                error={errors.password}
                             />
                         </div>
 
                         <div className="login-submit-container">
-                            <Button variant="primary" fullWidth className="login-submit-btn">
+                            <Button type="submit" variant="primary" fullWidth className="login-submit-btn">
                                 Iniciar Sesión
                             </Button>
                         </div>
