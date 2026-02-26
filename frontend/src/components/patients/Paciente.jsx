@@ -49,7 +49,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
   const initials = getInitials(paciente.nombre);
 
   return (
-    <div className="paciente-row">
+    <div className="paciente-row" data-testid="patient-row">
       <div className="paciente-cell paciente-id">
         {paciente.id}
       </div>
@@ -63,7 +63,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
           )}
         </div>
         <div className="paciente-details">
-          <div className="paciente-nombre">{paciente.nombre}</div>
+          <div className="paciente-nombre" data-testid="patient-name">{paciente.nombre}</div>
           <div className="paciente-email">{paciente.email}</div>
         </div>
       </div>
@@ -88,6 +88,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
           className="action-button view-button"
           onClick={() => onView(paciente)}
           title="Ver detalles"
+          data-testid="view-patient-btn"
         >
           <Eye size={18} />
         </button>
@@ -95,6 +96,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
           className="action-button edit-button"
           onClick={() => onEdit(paciente)}
           title="Editar"
+          data-testid="edit-patient-btn"
         >
           <Edit size={18} />
         </button>
