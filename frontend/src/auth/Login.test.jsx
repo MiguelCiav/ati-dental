@@ -4,7 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 jest.mock('lucide-react', () => ({
     Mail: () => <svg data-testid="mail-icon" />,
-    EyeOff: () => <svg data-testid="eye-off-icon" />
+    EyeOff: () => <svg data-testid="eye-off-icon" />,
+    Eye: () => <svg data-testid="eye-icon" />
 }));
 
 describe('Login Component', () => {
