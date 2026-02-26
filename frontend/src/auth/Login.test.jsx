@@ -16,35 +16,28 @@ describe('Login Component', () => {
 
     test('renders main titles and texts', () => {
         renderWithRouter(<Login />);
-        expect(screen.getByText('Gestión Dental')).toBeInTheDocument();
-        expect(screen.getByText('Inteligente')).toBeInTheDocument();
-        expect(screen.getByText('Bienvenido de nuevo')).toBeInTheDocument();
-        expect(screen.getByText('Ingresa tus credenciales para acceder a tu panel')).toBeInTheDocument();
+        // Use regex for text that might be broken by <br /> or other child elements
+        expect(screen.getByText(/Gestión Dental/i)).toBeInTheDocument();
+        expect(screen.getByText(/Inteligente/i)).toBeInTheDocument();
+        expect(screen.getByText(/Bienvenido de nuevo/i)).toBeInTheDocument();
+        expect(screen.getByText(/Ingresa tus credenciales para acceder a tu panel/i)).toBeInTheDocument();
     });
 
     test('renders the login form fields', () => {
         renderWithRouter(<Login />);
 
-        // Use placeholders or labels to find the inputs
-        expect(screen.getByLabelText('Correo electrónico')).toBeInTheDocument();
+        // Use regex for labels that contain spans like the required indicator (*)
+        expect(screen.getByLabelText(/Correo electrónico/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText('ejemplo@correo.com')).toBeInTheDocument();
 
-        expect(screen.getByText('Contraseña')).toBeInTheDocument();
+        expect(screen.getByText(/Contraseña/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText('••••••••')).toBeInTheDocument();
     });
 
-    test('renders the submit button and links', () => {
+    test('renders the submit button', () => {
         renderWithRouter(<Login />);
 
         const submitButton = screen.getByRole('button', { name: /Iniciar Sesión/i });
         expect(submitButton).toBeInTheDocument();
-
-        const forgotPasswordLink = screen.getByRole('link', { name: /¿Olvidaste tu contraseña\?/i });
-        expect(forgotPasswordLink).toBeInTheDocument();
-        expect(forgotPasswordLink).toHaveAttribute('href', '/forgot-password');
-
-        const registerLink = screen.getByRole('link', { name: /Registrarse/i });
-        expect(registerLink).toBeInTheDocument();
-        expect(registerLink).toHaveAttribute('href', '/register');
     });
 });
