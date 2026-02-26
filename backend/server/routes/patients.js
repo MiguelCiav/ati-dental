@@ -11,23 +11,49 @@ router.get('/', async (req, res) => {
   try {
     const { search } = req.query;
     let query = { activo: true };
+    let patients = [];
 
-    // Si hay término de búsqueda, usar búsqueda de texto o regex
+    // Si hay término de búsqueda
     if (search && search.trim() !== '') {
       const searchTerm = search.trim();
       
-      // Búsqueda flexible usando regex para nombre, email y cédula
-      query.$or = [
-        { nombre: { $regex: searchTerm, $options: 'i' } },
-        { email: { $regex: searchTerm, $options: 'i' } },
-        { cedula: { $regex: searchTerm, $options: 'i' } }
-      ];
+      // Si busca por ID (formato #P-XXXX o P-XXXX o solo XXXX)
+      const idMatch = searchTerm.match(/(?:#?P-?)?([A-Z0-9]{4})/i);
+      
+      if (idMatch) {
+        // Buscar por los últimos 4 caracteres del _id
+        const idSuffix = idMatch[1].toUpperCase();
+        
+        // Obtener todos los pacientes y filtrar por el sufijo del ID
+        const allPatients = await Patient.find(query)
+          .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+          .lean();
+        
+        patients = allPatients.filter(patient => 
+          patient._id.toString().slice(-4).toUpperCase() === idSuffix
+        );
+      }
+      
+      // Si no encontró por ID o no era un ID, buscar por nombre, email, cédula
+      if (patients.length === 0) {
+        query.$or = [
+          { nombre: { $regex: searchTerm, $options: 'i' } },
+          { email: { $regex: searchTerm, $options: 'i' } },
+          { cedula: { $regex: searchTerm, $options: 'i' } }
+        ];
+        
+        patients = await Patient.find(query)
+          .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+          .sort({ ultimaVisita: -1 })
+          .lean();
+      }
+    } else {
+      // Sin búsqueda, devolver todos
+      patients = await Patient.find(query)
+        .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+        .sort({ ultimaVisita: -1 })
+        .lean();
     }
-
-    const patients = await Patient.find(query)
-      .select('nombre email telefono cedula foto ultimaVisita proximaCita')
-      .sort({ ultimaVisita: -1 })
-      .lean();
 
     // Formatear respuesta con displayId
     const formattedPatients = patients.map(patient => ({
