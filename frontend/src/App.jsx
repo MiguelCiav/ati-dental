@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
 import { Modal, InputField, Button, Card } from './components'
+import { SearchAndFilter, ListaPacientes } from './components/patients'
 import { Mail, Lock, Plus, LogIn, User, Phone, Edit } from 'lucide-react'
 import './App.css'
 import Login from './auth/Login'
@@ -22,116 +23,121 @@ function App() {
 }
 
 const PatientsPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: ''
-  });
+  // Datos de ejemplo - Estos deberían venir de una API
+  const [pacientes, setPacientes] = useState([
+    {
+      id: '#P-0042',
+      nombre: 'María González',
+      email: 'maria.gonzalez@email.com',
+      foto: null,
+      ultimaVisita: '2023-10-15',
+      proximaCita: '2023-10-22T10:00:00',
+    },
+    {
+      id: '#P-0043',
+      nombre: 'Carlos Ruiz',
+      email: 'cruiz88@email.com',
+      foto: null,
+      ultimaVisita: '2023-10-10',
+      proximaCita: null,
+    },
+    {
+      id: '#P-0044',
+      nombre: 'Laura Blanco',
+      email: 'laura.b@email.com',
+      foto: null,
+      ultimaVisita: '2023-10-02',
+      proximaCita: '2023-10-25T16:30:00',
+    },
+    {
+      id: '#P-0045',
+      nombre: 'Jorge Mendez',
+      email: 'jmendez@email.com',
+      foto: null,
+      ultimaVisita: '2023-08-12',
+      proximaCita: null,
+    },
+    {
+      id: '#P-0046',
+      nombre: 'Ana Lopez',
+      email: 'ana.lo@email.com',
+      foto: null,
+      ultimaVisita: '2023-10-18',
+      proximaCita: '2023-10-30T09:15:00',
+    },
+  ]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('recientes');
+
+  // Filtrar y ordenar pacientes
+  const filteredAndSortedPacientes = pacientes
+    .filter((paciente) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        paciente.nombre.toLowerCase().includes(searchLower) ||
+        paciente.email.toLowerCase().includes(searchLower) ||
+        paciente.id.toLowerCase().includes(searchLower)
+      );
+    })
+    .sort((a, b) => {
+      switch (sortOrder) {
+        case 'recientes':
+          return new Date(b.ultimaVisita) - new Date(a.ultimaVisita);
+        case 'antiguos':
+          return new Date(a.ultimaVisita) - new Date(b.ultimaVisita);
+        case 'nombre-asc':
+          return a.nombre.localeCompare(b.nombre);
+        case 'nombre-desc':
+          return b.nombre.localeCompare(a.nombre);
+        default:
+          return 0;
+      }
+    });
+
+  const handleViewPaciente = (paciente) => {
+    console.log('Ver paciente:', paciente);
+    // Aquí se puede navegar a la página de detalles del paciente
+  };
+
+  const handleEditPaciente = (paciente) => {
+    console.log('Editar paciente:', paciente);
+    // Aquí se puede abrir un modal para editar el paciente
   };
 
   return (
     <div className="page-container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="page-header">
         <h1>Listado de Pacientes</h1>
-        <Button variant="primary" icon={Plus} onClick={() => setIsModalOpen(true)}>
-          Nuevo Paciente
-        </Button>
+        <p>Gestiona y consulta el historial de todos tus pacientes.</p>
       </div>
 
-      <p style={{ marginBottom: '32px', color: '#666' }}>Aquí se mostrará el listado de pacientes.</p>
+      <Card padding="medium" style={{ marginBottom: '24px' }}>
+        <SearchAndFilter
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          sortOrder={sortOrder}
+          onSortChange={setSortOrder}
+        />
+      </Card>
 
-      <div style={{ maxWidth: '500px' }}>
-        <h3 style={{ marginBottom: '20px', color: '#333' }}>Ejemplo de Componentes</h3>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <InputField
-            label="Correo Electrónico"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="ejemplo@correo.com"
-            icon={Mail}
-          />
-
-          <InputField
-            label="Contraseña"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="••••••••"
-            icon={Lock}
-            helperText="¿Olvidaste tu contraseña?"
-          />
-
-          <InputField
-            label="Nombre"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="John"
-          />
-
-          <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-            <Button variant="primary" fullWidth>
-              Iniciar Sesión
-            </Button>
-          </div>
-
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <Button variant="secondary" fullWidth>
-              Google
-            </Button>
-            <Button variant="secondary" fullWidth>
-              Microsoft
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Ejemplo de Modal con Formulario"
-        size="medium"
-        footer={
-          <>
-            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-              Cancelar
-            </Button>
-            <Button variant="primary" onClick={() => setIsModalOpen(false)}>
-              Guardar
-            </Button>
-          </>
-        }
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <InputField
-            label="Correo Electrónico"
-            type="email"
-            placeholder="ejemplo@correo.com"
-            icon={Mail}
-          />
-          <InputField
-            label="Nombre Completo"
-            placeholder="John Smith"
-            required
-          />
-        </div>
-      </Modal>
+      <Card noPadding>
+        <ListaPacientes
+          pacientes={filteredAndSortedPacientes}
+          onViewPaciente={handleViewPaciente}
+          onEditPaciente={handleEditPaciente}
+        />
+      </Card>
     </div>
   );
 }
 
 const RegisterPatientPage = () => (
   <div className="page-container">
-    <h1>Registrar Paciente</h1>
-    <p>Formulario de registro de pacientes.</p>
+    <div className="page-header">
+      <h1>Registrar Paciente</h1>
+      <p>Formulario de registro de pacientes.</p>
+    </div>
   </div>
 )
 
@@ -227,8 +233,10 @@ const ProfilePage = () => {
 
 const ContactPage = () => (
   <div className="page-container">
-    <h1>Contacto</h1>
-    <p>Información de contacto.</p>
+    <div className="page-header">
+      <h1>Contacto</h1>
+      <p>Información de contacto.</p>
+    </div>
   </div>
 )
 

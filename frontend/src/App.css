@@ -5,22 +5,39 @@
 }
 
 .page-container {
+  max-width: 1400px;
+  width: 100%;
+}
+
+.page-container h1 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-container p {
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-card-container {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.page-container h1 {
+.page-card-container h1 {
   margin: 0 0 16px 0;
   color: #333;
   font-size: 24px;
   font-weight: 600;
-}
-
-.page-container p {
-  color: #666;
-  line-height: 1.6;
 }
 
 .profile-avatar {
@@ -50,8 +67,12 @@
 }
 
 @media (max-width: 768px) {
-  .page-container {
+  .page-card-container {
     padding: 16px;
+  }
+
+  .page-container h1 {
+    font-size: 24px;
   }
 
   .form-grid {
