@@ -1,10 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         // Check if user is logged in on mount
@@ -13,7 +15,13 @@ export const AuthProvider = ({ children }) => {
 
         if (token && userData) {
             try {
-                setUser(JSON.parse(userData));
+                const parsedUser = JSON.parse(userData);
+                setUser(parsedUser);
+
+                // Set initial language from user profile if available
+                if (parsedUser.language) {
+                    i18n.changeLanguage(parsedUser.language);
+                }
             } catch (e) {
                 console.error('Error parsing user data:', e);
                 localStorage.removeItem('token');
@@ -27,6 +35,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
+
+        // Change language when user logs in based on their backend preference
+        if (userData.language) {
+            i18n.changeLanguage(userData.language);
+        }
     };
 
     const logout = () => {

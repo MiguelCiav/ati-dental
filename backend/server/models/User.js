@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     enum: ['doctor', 'admin'],
     default: 'doctor'
   },
+  language: {
+    type: String,
+    default: 'es'
+  },
   activo: {
     type: Boolean,
     default: true
@@ -36,7 +40,7 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ email: 1 });
 
 // Middleware para hashear la contraseña antes de guardar
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   // Solo hashear si la contraseña fue modificada o es nueva
   if (!this.isModified('password')) {
     return next();
@@ -53,19 +57,19 @@ userSchema.pre('save', async function(next) {
 });
 
 // Método para comparar contraseñas
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
 // Método virtual para obtener el ID en formato #U-XXXX
-userSchema.virtual('displayId').get(function() {
+userSchema.virtual('displayId').get(function () {
   return `#U-${this._id.toString().slice(-4).toUpperCase()}`;
 });
 
 // Asegurar que los virtuals se incluyan en JSON
-userSchema.set('toJSON', { 
+userSchema.set('toJSON', {
   virtuals: true,
-  transform: function(doc, ret) {
+  transform: function (doc, ret) {
     delete ret.password; // No incluir la contraseña en el JSON
     return ret;
   }

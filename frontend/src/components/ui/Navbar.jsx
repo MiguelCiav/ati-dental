@@ -1,22 +1,24 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Home, ChevronRight, Menu } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = ({ onToggleSidebar }) => {
   const location = useLocation();
+  const { t } = useTranslation('common');
 
   const routeLabels = {
-    '/': 'Inicio',
-    '/patients': 'Listado de Pacientes',
-    '/patients/register': 'Registrar Paciente',
-    '/profile': 'Perfil e Idioma',
+    '/': t('menu.dashboard', 'Inicio'),
+    '/patients': t('menu.patientsList', 'Listado de Pacientes'),
+    '/patients/register': t('menu.registerPatient', 'Registrar Paciente'),
+    '/profile': t('menu.profileSettings', 'Perfil e Idioma'),
     '/contact': 'Contacto',
     '/settings': 'Ajustes',
   };
 
   const generateBreadcrumbs = () => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
-    const breadcrumbs = [{ label: 'Inicio', path: '/' }];
+    const breadcrumbs = [{ label: t('menu.dashboard', 'Inicio'), path: '/' }];
 
     let currentPath = '';
     pathSegments.forEach((segment) => {
@@ -40,7 +42,7 @@ const Navbar = ({ onToggleSidebar }) => {
         <Link to="/" className="breadcrumb-item home">
           <Home size={18} />
         </Link>
-        
+
         {breadcrumbs.slice(1).map((crumb, index) => (
           <div key={crumb.path} className="breadcrumb-wrapper">
             <ChevronRight size={14} className="breadcrumb-separator" />
