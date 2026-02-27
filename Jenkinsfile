@@ -65,6 +65,7 @@ pipeline {
                 sh """#!/bin/sh
                 set -eux
                 docker build \\
+                    --no-cache \\
                     -f frontend/Dockerfile.build \\
                     -t ${FRONTEND_BUILD_IMAGE} \\
                     frontend
