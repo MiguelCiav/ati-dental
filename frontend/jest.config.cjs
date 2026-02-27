@@ -2,9 +2,10 @@ module.exports = {
     // Usar jsdom para simular el DOM del navegador en los tests
     testEnvironment: 'jsdom',
 
-    // Transpilar JSX y ESM con Babel
+    // Transpilar JSX y ESM con nuestro transformer personalizado
+    // que reemplaza import.meta.env → process.env antes de Babel
     transform: {
-        '^.+\\.[jt]sx?$': 'babel-jest',
+        '^.+\\.[jt]sx?$': '<rootDir>/jest.transform.cjs',
     },
 
     // Reemplazar importaciones de archivos estáticos (CSS, SVG, imágenes)
