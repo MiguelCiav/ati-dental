@@ -26,6 +26,7 @@ mongoose.connect(mongoURI, {
 
 // Importar rutas
 const patientsRoutes = require('./routes/patients');
+const authRoutes = require('./routes/auth');
 
 // Ruta principal para verificar el estado de la API 
 app.get('/', (req, res) => {
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 
 // Rutas de la API
 app.use('/api/patients', patientsRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 

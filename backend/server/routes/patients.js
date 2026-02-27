@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Patient = require('../models/Patient');
+const authMiddleware = require('../middleware/authMiddleware');
+
+// Aplicar el middleware a todas las rutas de este router
+router.use(authMiddleware);
 
 /**
  * GET /api/patients
@@ -16,24 +20,24 @@ router.get('/', async (req, res) => {
     // Si hay término de búsqueda
     if (search && search.trim() !== '') {
       const searchTerm = search.trim();
-      
+
       // Si busca por ID (formato #P-XXXX o P-XXXX o solo XXXX)
       const idMatch = searchTerm.match(/(?:#?P-?)?([A-Z0-9]{4})/i);
-      
+
       if (idMatch) {
         // Buscar por los últimos 4 caracteres del _id
         const idSuffix = idMatch[1].toUpperCase();
-        
+
         // Obtener todos los pacientes y filtrar por el sufijo del ID
         const allPatients = await Patient.find(query)
           .select('nombre email telefono cedula foto ultimaVisita proximaCita')
           .lean();
-        
-        patients = allPatients.filter(patient => 
+
+        patients = allPatients.filter(patient =>
           patient._id.toString().slice(-4).toUpperCase() === idSuffix
         );
       }
-      
+
       // Si no encontró por ID o no era un ID, buscar por nombre, email, cédula
       if (patients.length === 0) {
         query.$or = [
@@ -41,7 +45,7 @@ router.get('/', async (req, res) => {
           { email: { $regex: searchTerm, $options: 'i' } },
           { cedula: { $regex: searchTerm, $options: 'i' } }
         ];
-        
+
         patients = await Patient.find(query)
           .select('nombre email telefono cedula foto ultimaVisita proximaCita')
           .sort({ ultimaVisita: -1 })
@@ -71,9 +75,9 @@ router.get('/', async (req, res) => {
     res.json(formattedPatients);
   } catch (error) {
     console.error('Error al obtener pacientes:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error al obtener la lista de pacientes',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -85,7 +89,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const patient = await Patient.findById(req.params.id);
-    
+
     if (!patient) {
       return res.status(404).json({ message: 'Paciente no encontrado' });
     }
@@ -93,9 +97,9 @@ router.get('/:id', async (req, res) => {
     res.json(patient);
   } catch (error) {
     console.error('Error al obtener paciente:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error al obtener el paciente',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -111,9 +115,9 @@ router.post('/', async (req, res) => {
     res.status(201).json(patient);
   } catch (error) {
     console.error('Error al crear paciente:', error);
-    res.status(400).json({ 
+    res.status(400).json({
       message: 'Error al crear el paciente',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -129,7 +133,7 @@ router.put('/:id', async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
-    
+
     if (!patient) {
       return res.status(404).json({ message: 'Paciente no encontrado' });
     }
@@ -137,9 +141,9 @@ router.put('/:id', async (req, res) => {
     res.json(patient);
   } catch (error) {
     console.error('Error al actualizar paciente:', error);
-    res.status(400).json({ 
+    res.status(400).json({
       message: 'Error al actualizar el paciente',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -155,7 +159,7 @@ router.delete('/:id', async (req, res) => {
       { activo: false },
       { new: true }
     );
-    
+
     if (!patient) {
       return res.status(404).json({ message: 'Paciente no encontrado' });
     }
@@ -163,9 +167,9 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Paciente eliminado correctamente', patient });
   } catch (error) {
     console.error('Error al eliminar paciente:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error al eliminar el paciente',
-      error: error.message 
+      error: error.message
     });
   }
 });

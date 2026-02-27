@@ -46,6 +46,8 @@ services:
     environment:
       - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin
       - NODE_ENV=development
+      - JWT_SECRET=${JWT_SECRET:-este_es_un_secreto_super_seguro_para_desarrollo_123!}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
     depends_on:
       mongo:
         condition: service_healthy
