@@ -24,9 +24,64 @@
 				"url": {
 					"raw": "http://api:3000/",
 					"protocol": "http",
-					"host": [ "api" ],
+					"host": [
+						"api"
+					],
 					"port": "3000",
-					"path": [ "" ]
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/auth/login - Autenticarse y obtener token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Login exitoso - Estado 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Respuesta contiene token JWT', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"    pm.expect(jsonData.data.token).to.be.a('string');",
+							"    // Guardar el token como variable de colección para las siguientes peticiones",
+							"    pm.collectionVariables.set('authToken', jsonData.data.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"admin@atidental.com\",\"password\":\"password123\"}"
+				},
+				"url": {
+					"raw": "http://api:3000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"api"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
 				}
 			},
 			"response": []
@@ -63,13 +118,23 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					}
+				],
 				"url": {
 					"raw": "http://api:3000/api/patients",
 					"protocol": "http",
-					"host": [ "api" ],
+					"host": [
+						"api"
+					],
 					"port": "3000",
-					"path": [ "api", "patients" ]
+					"path": [
+						"api",
+						"patients"
+					]
 				}
 			},
 			"response": []
@@ -109,13 +174,23 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					}
+				],
 				"url": {
 					"raw": "http://api:3000/api/patients?search=Maria",
 					"protocol": "http",
-					"host": [ "api" ],
+					"host": [
+						"api"
+					],
 					"port": "3000",
-					"path": [ "api", "patients" ],
+					"path": [
+						"api",
+						"patients"
+					],
 					"query": [
 						{
 							"key": "search",
@@ -153,13 +228,23 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					}
+				],
 				"url": {
 					"raw": "http://api:3000/api/patients?search=",
 					"protocol": "http",
-					"host": [ "api" ],
+					"host": [
+						"api"
+					],
 					"port": "3000",
-					"path": [ "api", "patients" ],
+					"path": [
+						"api",
+						"patients"
+					],
 					"query": [
 						{
 							"key": "search",
@@ -199,13 +284,23 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					}
+				],
 				"url": {
 					"raw": "http://api:3000/api/patients?search=González",
 					"protocol": "http",
-					"host": [ "api" ],
+					"host": [
+						"api"
+					],
 					"port": "3000",
-					"path": [ "api", "patients" ],
+					"path": [
+						"api",
+						"patients"
+					],
 					"query": [
 						{
 							"key": "search",
@@ -215,6 +310,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
 		}
 	]
 }
