@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
 import { Modal, InputField, Button, Card } from './components'
-import { Mail, Lock, Plus, LogIn, User, Phone, Edit } from 'lucide-react'
+import { Mail, Lock, Plus, LogIn } from 'lucide-react'
+import ProfilePage from './profile/ProfileLanguage'
 import './App.css'
 import Login from './auth/Login'
 import PatientsPage from './patients/PatientsPage'
@@ -70,56 +71,6 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <div className="form-grid">
-            <InputField
-              label="Nombre"
-              name="nombre"
-              value={profileData.nombre}
-              onChange={handleProfileChange}
-              placeholder="John"
-            />
-            <InputField
-              label="Apellidos"
-              name="apellidos"
-              value={profileData.apellidos}
-              onChange={handleProfileChange}
-              placeholder="Smith"
-            />
-          </div>
-
-          <div className="form-grid">
-            <InputField
-              label="Correo Electrónico"
-              type="email"
-              name="email"
-              value={profileData.email}
-              onChange={handleProfileChange}
-              icon={Mail}
-            />
-            <InputField
-              label="Teléfono"
-              type="tel"
-              name="telefono"
-              value={profileData.telefono}
-              onChange={handleProfileChange}
-              icon={Phone}
-            />
-          </div>
-
-          <InputField
-            label="Bio Profesional"
-            name="bio"
-            value={profileData.bio}
-            onChange={handleProfileChange}
-            placeholder="Breve descripción para el perfil público."
-            multiline
-            rows={4}
-          />
-        </div>
-      </Card>
-    </div>
-  );
-}
 
 const ContactPage = () => (
   <div className="page-container">
