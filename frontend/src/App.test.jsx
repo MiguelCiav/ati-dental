@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import App from './App';
 
 describe('App', () => {
@@ -8,7 +9,9 @@ describe('App', () => {
         // Smoke test: verifica que el componente principal monta sin lanzar errores
         render(
             <BrowserRouter>
-                <App />
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
         );
         expect(document.body).toBeTruthy();

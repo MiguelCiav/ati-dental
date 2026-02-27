@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from '../context/AuthContext';
 import Login from './Login';
 jest.mock('lucide-react', () => ({
     Mail: () => <svg data-testid="mail-icon" />,
@@ -9,9 +10,9 @@ jest.mock('lucide-react', () => ({
 }));
 
 describe('Login Component', () => {
-    // Helper function to render component with router context
+    // Helper function to render component with router + auth context
     const renderWithRouter = (ui) => {
-        return render(<BrowserRouter>{ui}</BrowserRouter>);
+        return render(<BrowserRouter><AuthProvider>{ui}</AuthProvider></BrowserRouter>);
     };
 
     test('renders main titles and texts', () => {

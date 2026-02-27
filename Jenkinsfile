@@ -117,6 +117,11 @@ pipeline {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                         sh "docker build -t ${API_TEST_IMAGE} -f tests/api/Dockerfile.test tests/api"
+
+                        // Sembrar usuario y pacientes de prueba antes de correr Newman
+                        sh "docker exec ati_api node seedUser.js || true"
+                        sh "docker exec ati_api node seedPatients.js || true"
+
                         sh """
                         docker run --rm \\
                             --network ${APP_NETWORK} \\

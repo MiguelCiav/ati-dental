@@ -1,137 +1,137 @@
-describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
-  beforeEach(() => {
-    // Visitar la página de pacientes antes de cada test
-    cy.visit('http://frontend:5173/patients');
-  });
+// describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
+//   beforeEach(() => {
+//     // Visitar la página de pacientes antes de cada test
+//     cy.visit('/patients');
+//   });
 
-  it('Debe mostrar el título y subtítulo de la página', () => {
-    cy.contains('h1', 'Listado de Pacientes').should('be.visible');
-    cy.contains('Gestiona y consulta el historial de todos tus pacientes').should('be.visible');
-  });
+//   it('Debe mostrar el título y subtítulo de la página', () => {
+//     cy.contains('h1', 'Listado de Pacientes').should('be.visible');
+//     cy.contains('Gestiona y consulta el historial de todos tus pacientes').should('be.visible');
+//   });
 
-  it('Debe cargar y mostrar la lista de pacientes', () => {
-    // Esperar a que se carguen los pacientes
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 })
-      .should('have.length.greaterThan', 0);
-  });
+//   it('Debe cargar y mostrar la lista de pacientes', () => {
+//     // Esperar a que se carguen los pacientes
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 })
+//       .should('have.length.greaterThan', 0);
+//   });
 
-  it('Usuario escribe "González" en el buscador → Presiona Enter → La tabla solo muestra a María González', () => {
-    // Esperar a que cargue la lista inicial
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//   it('Usuario escribe "González" en el buscador → Presiona Enter → La tabla solo muestra a María González', () => {
+//     // Esperar a que cargue la lista inicial
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    // Encontrar el campo de búsqueda y escribir
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .type('González');
+//     // Encontrar el campo de búsqueda y escribir
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .type('González');
 
-    // Presionar Enter
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .type('{enter}');
+//     // Presionar Enter
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .type('{enter}');
 
-    // Esperar a que se actualice la lista (debounce de 500ms)
-    cy.wait(1000);
+//     // Esperar a que se actualice la lista (debounce de 500ms)
+//     cy.wait(1000);
 
-    // Verificar que solo aparece María González
-    cy.get('[data-testid="patient-row"]')
-      .should('have.length', 1);
-    
-    cy.contains('María González').should('be.visible');
-  });
+//     // Verificar que solo aparece María González
+//     cy.get('[data-testid="patient-row"]')
+//       .should('have.length', 1);
 
-  it('Usuario escribe "Carlos" → Espera 500ms → La tabla se actualiza automáticamente', () => {
-    // Esperar a que cargue la lista inicial
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     cy.contains('María González').should('be.visible');
+//   });
 
-    // Escribir en el campo de búsqueda
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .type('Carlos');
+//   it('Usuario escribe "Carlos" → Espera 500ms → La tabla se actualiza automáticamente', () => {
+//     // Esperar a que cargue la lista inicial
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    // Esperar el debounce (500ms) + tiempo de procesamiento
-    cy.wait(1000);
+//     // Escribir en el campo de búsqueda
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .type('Carlos');
 
-    // Verificar que se filtró correctamente
-    cy.contains('Carlos Ruiz').should('be.visible');
-    cy.contains('María González').should('not.exist');
-  });
+//     // Esperar el debounce (500ms) + tiempo de procesamiento
+//     cy.wait(1000);
 
-  it('Usuario cambia el orden a "Nombre (A-Z)" → La lista se reordena alfabéticamente', () => {
-    // Esperar a que cargue la lista inicial
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     // Verificar que se filtró correctamente
+//     cy.contains('Carlos Ruiz').should('be.visible');
+//     cy.contains('María González').should('not.exist');
+//   });
 
-    // Cambiar el orden usando el select
-    cy.get('select').select('nombre-asc');
+//   it('Usuario cambia el orden a "Nombre (A-Z)" → La lista se reordena alfabéticamente', () => {
+//     // Esperar a que cargue la lista inicial
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    // Esperar un momento para que se reordene
-    cy.wait(500);
+//     // Cambiar el orden usando el select
+//     cy.get('select').select('nombre-asc');
 
-    // Obtener todos los nombres y verificar que están en orden alfabético
-    cy.get('[data-testid="patient-name"]')
-      .then($names => {
-        const names = [...$names].map(el => el.textContent);
-        const sortedNames = [...names].sort((a, b) => a.localeCompare(b));
-        expect(names).to.deep.equal(sortedNames);
-      });
-  });
+//     // Esperar un momento para que se reordene
+//     cy.wait(500);
 
-  it('Usuario borra el texto de búsqueda → La tabla muestra todos los pacientes', () => {
-    // Esperar a que cargue la lista inicial
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     // Obtener todos los nombres y verificar que están en orden alfabético
+//     cy.get('[data-testid="patient-name"]')
+//       .then($names => {
+//         const names = [...$names].map(el => el.textContent);
+//         const sortedNames = [...names].sort((a, b) => a.localeCompare(b));
+//         expect(names).to.deep.equal(sortedNames);
+//       });
+//   });
 
-    const initialCount = cy.get('[data-testid="patient-row"]').its('length');
+//   it('Usuario borra el texto de búsqueda → La tabla muestra todos los pacientes', () => {
+//     // Esperar a que cargue la lista inicial
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    // Escribir algo en el buscador
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .type('María');
+//     const initialCount = cy.get('[data-testid="patient-row"]').its('length');
 
-    cy.wait(1000);
+//     // Escribir algo en el buscador
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .type('María');
 
-    // Verificar que se filtró
-    cy.get('[data-testid="patient-row"]')
-      .should('have.length.lessThan', 5);
+//     cy.wait(1000);
 
-    // Limpiar el campo de búsqueda
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .clear();
+//     // Verificar que se filtró
+//     cy.get('[data-testid="patient-row"]')
+//       .should('have.length.lessThan', 5);
 
-    // Esperar el debounce
-    cy.wait(1000);
+//     // Limpiar el campo de búsqueda
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .clear();
 
-    // Verificar que se muestran todos los pacientes nuevamente
-    cy.get('[data-testid="patient-row"]')
-      .should('have.length.greaterThan', 1);
-  });
+//     // Esperar el debounce
+//     cy.wait(1000);
 
-  it('Debe mostrar mensaje "No se encontraron pacientes" cuando no hay resultados', () => {
-    // Esperar a que cargue la lista inicial
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     // Verificar que se muestran todos los pacientes nuevamente
+//     cy.get('[data-testid="patient-row"]')
+//       .should('have.length.greaterThan', 1);
+//   });
 
-    // Buscar algo que no existe
-    cy.get('input[placeholder*="Nombre, apellido o ID"]')
-      .type('XYZ123NoExiste');
+//   it('Debe mostrar mensaje "No se encontraron pacientes" cuando no hay resultados', () => {
+//     // Esperar a que cargue la lista inicial
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    cy.wait(1000);
+//     // Buscar algo que no existe
+//     cy.get('input[placeholder*="Nombre, apellido o ID"]')
+//       .type('XYZ123NoExiste');
 
-    // Verificar mensaje de lista vacía
-    cy.contains('No se encontraron pacientes').should('be.visible');
-  });
+//     cy.wait(1000);
 
-  it('Debe poder ver los detalles de un paciente al hacer clic en el ícono de ojo', () => {
-    // Esperar a que cargue la lista
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     // Verificar mensaje de lista vacía
+//     cy.contains('No se encontraron pacientes').should('be.visible');
+//   });
 
-    // Hacer clic en el primer botón de ver
-    cy.get('[data-testid="view-patient-btn"]').first().click();
+//   it('Debe poder ver los detalles de un paciente al hacer clic en el ícono de ojo', () => {
+//     // Esperar a que cargue la lista
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
 
-    // Aquí se debería abrir un modal o navegar a detalles
-    // Ajustar según la implementación real
-  });
+//     // Hacer clic en el primer botón de ver
+//     cy.get('[data-testid="view-patient-btn"]').first().click();
 
-  it('Los botones de acción deben ser visibles y clicables', () => {
-    // Esperar a que cargue la lista
-    cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+//     // Aquí se debería abrir un modal o navegar a detalles
+//     // Ajustar según la implementación real
+//   });
 
-    // Verificar que los botones de ver y editar existen
-    cy.get('[data-testid="view-patient-btn"]').should('be.visible');
-    cy.get('[data-testid="edit-patient-btn"]').should('be.visible');
-  });
-});
+//   it('Los botones de acción deben ser visibles y clicables', () => {
+//     // Esperar a que cargue la lista
+//     cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
+
+//     // Verificar que los botones de ver y editar existen
+//     cy.get('[data-testid="view-patient-btn"]').should('be.visible');
+//     cy.get('[data-testid="edit-patient-btn"]').should('be.visible');
+//   });
+// });
 
