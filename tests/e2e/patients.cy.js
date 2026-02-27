@@ -1,7 +1,7 @@
 describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
   beforeEach(() => {
     // Visitar la página de pacientes antes de cada test
-    cy.visit('http://frontend:5173/patients');
+    cy.visit('/patients');
   });
 
   it('Debe mostrar el título y subtítulo de la página', () => {
@@ -33,7 +33,7 @@ describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
     // Verificar que solo aparece María González
     cy.get('[data-testid="patient-row"]')
       .should('have.length', 1);
-    
+
     cy.contains('María González').should('be.visible');
   });
 
