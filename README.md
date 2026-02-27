@@ -77,6 +77,24 @@ docker compose -f docker-compose.dev.yml up
 
 2. El frontend será accesible desde http://localhost:5173/, el backend desde http://localhost:5000/ y la base de datos desde localhost:27017. Cualquier cambio en el backend o frontend se verá reflejado en tiempo real.
 
+## 💾 Carga Inicial de Datos (Seeders)
+
+Si levantaste el entorno de desarrollo usando `docker-compose.dev.yml` y necesitas poblar la base de datos con información inicial para pruebas, puedes ejecutar los *seeders* disponibles. 
+
+Para ejecutar los scripts, abre una terminal y corre los comandos utilizando el contenedor `dev_api`:
+
+1. **Crear usuario administrador de prueba**  
+   Crea un usuario con rol *admin* para probar el login.
+   ```bash
+   docker exec dev_api node seedUser.js
+   ```
+
+2. **Cargar pacientes de prueba**  
+   Popula la colección de pacientes con datos de ejemplo.
+   ```bash
+   docker exec dev_api node seedPatients.js
+   ```
+
 
 ## Jenkins
 
