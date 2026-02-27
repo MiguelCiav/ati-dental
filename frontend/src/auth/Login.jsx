@@ -3,9 +3,16 @@ import { Mail, EyeOff } from 'lucide-react';
 import { InputField, Button } from '../components';
 import toothSvg from '../assets/tooth.svg';
 import loginBackground from '../assets/login_background.png';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [authError, setAuthError] = useState('');
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -52,12 +59,43 @@ const Login = () => {
         return isValid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setAuthError('');
 
         if (validateForm()) {
-            console.log('Formulario válido. Iniciando sesión...', formData);
-            // TODO: Integrar lógica de autenticación con el backend API aquí
+            setLoading(true);
+            try {
+                // Determine API URL based on environment
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+                const response = await fetch(`${apiUrl}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Save token and user data in context
+                    login(data.data.token, data.data.user);
+                    // Redirect to patients page
+                    navigate('/patients');
+                } else {
+                    setAuthError(data.message || 'Error de credenciales.');
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                setAuthError('Error de conexión con el servidor.');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -97,6 +135,12 @@ const Login = () => {
                         </div>
                         <h1 className="login-title">Bienvenido de nuevo</h1>
                         <p className="login-subtitle">Ingresa tus credenciales para acceder a tu panel</p>
+
+                        {authError && (
+                            <div className="login-auth-error" style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem' }}>
+                                {authError}
+                            </div>
+                        )}
                     </div>
 
                     <form className="login-form" onSubmit={handleSubmit}>
@@ -131,8 +175,8 @@ const Login = () => {
                         </div>
 
                         <div className="login-submit-container">
-                            <Button type="submit" variant="primary" fullWidth className="login-submit-btn">
-                                Iniciar Sesión
+                            <Button type="submit" variant="primary" fullWidth className="login-submit-btn" disabled={loading}>
+                                {loading ? 'Iniciando...' : 'Iniciar Sesión'}
                             </Button>
                         </div>
                     </form>

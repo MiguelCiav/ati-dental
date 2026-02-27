@@ -13,16 +13,22 @@ const patientsService = {
    */
   async getPatients(searchTerm = '') {
     try {
-      const url = searchTerm 
+      const url = searchTerm
         ? `${API_URL}/patients?search=${encodeURIComponent(searchTerm)}`
         : `${API_URL}/patients`;
-      
-      const response = await fetch(url);
-      
+
+      const token = localStorage.getItem('token');
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json'
+        }
+      });
+
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
-      
+
       return await response.json();
     } catch (error) {
       console.error('Error al obtener pacientes:', error);
@@ -37,12 +43,18 @@ const patientsService = {
    */
   async getPatientById(id) {
     try {
-      const response = await fetch(`${API_URL}/patients/${id}`);
-      
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/patients/${id}`, {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json'
+        }
+      });
+
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
-      
+
       return await response.json();
     } catch (error) {
       console.error('Error al obtener paciente:', error);

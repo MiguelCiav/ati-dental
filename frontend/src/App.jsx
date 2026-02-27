@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
-import { Modal, InputField, Button, Card } from './components'
+import { Modal, InputField, Button, Card, ProtectedRoute } from './components'
 import { Mail, Lock, Plus, LogIn } from 'lucide-react'
 import ProfilePage from './profile/ProfileLanguage'
 import './App.css'
@@ -12,12 +12,14 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Navigate to="/patients" replace />} />
-        <Route path="patients" element={<PatientsPage />} />
-        <Route path="patients/register" element={<RegisterPatientPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="contact" element={<ContactPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/patients" replace />} />
+          <Route path="patients" element={<PatientsPage />} />
+          <Route path="patients/register" element={<RegisterPatientPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="contact" element={<ContactPage />} />
+        </Route>
       </Route>
     </Routes>
   )
