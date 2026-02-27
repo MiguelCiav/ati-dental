@@ -1,0 +1,49 @@
+{
+    "menu": {
+        "dashboard": "Dashboard",
+        "patientsList": "Patients List",
+        "registerPatient": "Register Patient",
+        "registerPatientHint": "Patient registration form.",
+        "reports": "Reports",
+        "profileSettings": "Profile Settings",
+        "contact": "Contact",
+        "contactHint": "Contact Information.",
+        "logout": "Logout"
+    },
+    "patients": {
+        "title": "Patients",
+        "add": "Add Patient",
+        "edit": "Edit",
+        "delete": "Delete",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone"
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "loading": "Loading..."
+    },
+    "profile": {
+        "titleInfo": "Personal Information",
+        "avatar": "Profile Picture",
+        "avatarChange": "Change",
+        "avatarDelete": "Delete",
+        "avatarHint": "JPG, GIF, or PNG. Max 1MB.",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "bio": "Professional Bio",
+        "bioPlaceholder": "Brief description for public profile.",
+        "cancel": "Cancel",
+        "saveChanges": "Save Changes",
+        "titleLanguage": "Interface Language",
+        "languageDesc": "Select the preferred language for the ATI Dental system interface.",
+        "langEs": "Español",
+        "langEsHint": "Default language for LATAM.",
+        "langEn": "English",
+        "langEnHint": "Standard interface language.",
+        "success": "Profile saved successfully."
+    }
+}

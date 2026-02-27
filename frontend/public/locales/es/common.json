@@ -1,0 +1,49 @@
+{
+    "menu": {
+        "dashboard": "Dashboard",
+        "patientsList": "Listado de Pacientes",
+        "registerPatient": "Registrar Paciente",
+        "registerPatientHint": "Formulario de registro de pacientes.",
+        "reports": "Reportes",
+        "profileSettings": "Ajustes de Perfil",
+        "contact": "Contacto",
+        "contactHint": "Información de contacto.",
+        "logout": "Cerrar Sesión"
+    },
+    "patients": {
+        "title": "Pacientes",
+        "add": "Agregar Paciente",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "name": "Nombre",
+        "email": "Correo",
+        "phone": "Teléfono"
+    },
+    "common": {
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "loading": "Cargando..."
+    },
+    "profile": {
+        "titleInfo": "Información Personal",
+        "avatar": "Foto de Perfil",
+        "avatarChange": "Cambiar",
+        "avatarDelete": "Eliminar",
+        "avatarHint": "JPG, GIF o PNG. Max 1MB.",
+        "firstName": "Nombre",
+        "lastName": "Apellidos",
+        "email": "Correo Electrónico",
+        "phone": "Teléfono",
+        "bio": "Bio Profesional",
+        "bioPlaceholder": "Breve descripción para el perfil público.",
+        "cancel": "Cancelar",
+        "saveChanges": "Guardar Cambios",
+        "titleLanguage": "Idioma de la Interfaz",
+        "languageDesc": "Selecciona el idioma preferido para la interfaz del sistema ATI Dental.",
+        "langEs": "Español",
+        "langEsHint": "Idioma predeterminado para Venezuela y Latam.",
+        "langEn": "English (Inglés)",
+        "langEnHint": "Standard interface language.",
+        "success": "Perfil guardado exitosamente."
+    }
+}
