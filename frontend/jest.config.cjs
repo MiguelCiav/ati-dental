@@ -13,4 +13,7 @@ module.exports = {
         '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/fileMock.cjs',
         '\\.(svg|png|jpg|jpeg|gif|webp|ico)$': '<rootDir>/__mocks__/fileMock.cjs',
     },
+
+    // Ejecutar archivo de setup antes de cada test para polyfills
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
 };

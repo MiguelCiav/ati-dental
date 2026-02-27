@@ -8,6 +8,7 @@ const Card = ({
   padding = 'medium',
   className = '',
   noPadding = false,
+  style = {},
 }) => {
   const cardClasses = [
     'card',
@@ -19,7 +20,7 @@ const Card = ({
     .join(' ');
 
   return (
-    <div className={cardClasses}>
+    <div className={cardClasses} style={style}>
       {(title || Icon || headerAction) && (
         <div className="card-header">
           <div className="card-header-content">

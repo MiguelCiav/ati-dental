@@ -30,6 +30,191 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GET /api/patients - Obtener todos los pacientes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Respuesta es un array', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});",
+							"",
+							"pm.test('Los pacientes tienen la estructura correcta', function () {",
+							"    const jsonData = pm.response.json();",
+							"    if (jsonData.length > 0) {",
+							"        const patient = jsonData[0];",
+							"        pm.expect(patient).to.have.property('id');",
+							"        pm.expect(patient).to.have.property('nombre');",
+							"        pm.expect(patient).to.have.property('email');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api:3000/api/patients",
+					"protocol": "http",
+					"host": [ "api" ],
+					"port": "3000",
+					"path": [ "api", "patients" ]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/patients?search=Maria - Buscar paciente por nombre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Solo devuelve pacientes que coinciden con María', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    ",
+							"    jsonData.forEach(function(patient) {",
+							"        const matchesSearch = ",
+							"            patient.nombre.toLowerCase().includes('maria') ||",
+							"            patient.email.toLowerCase().includes('maria');",
+							"        pm.expect(matchesSearch).to.be.true;",
+							"    });",
+							"});",
+							"",
+							"pm.test('Encuentra a María González', function () {",
+							"    const jsonData = pm.response.json();",
+							"    const maria = jsonData.find(p => p.nombre.includes('María González'));",
+							"    pm.expect(maria).to.exist;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api:3000/api/patients?search=Maria",
+					"protocol": "http",
+					"host": [ "api" ],
+					"port": "3000",
+					"path": [ "api", "patients" ],
+					"query": [
+						{
+							"key": "search",
+							"value": "Maria"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/patients?search= - Búsqueda vacía devuelve todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Devuelve todos los pacientes', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
+							"});",
+							"",
+							"pm.test('Maneja correctamente búsqueda vacía', function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api:3000/api/patients?search=",
+					"protocol": "http",
+					"host": [ "api" ],
+					"port": "3000",
+					"path": [ "api", "patients" ],
+					"query": [
+						{
+							"key": "search",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/patients?search=González - Buscar por apellido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Solo devuelve registros que coinciden con González', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    ",
+							"    jsonData.forEach(function(patient) {",
+							"        const matchesSearch = ",
+							"            patient.nombre.toLowerCase().includes('gonzález') ||",
+							"            patient.email.toLowerCase().includes('gonzález');",
+							"        pm.expect(matchesSearch).to.be.true;",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api:3000/api/patients?search=González",
+					"protocol": "http",
+					"host": [ "api" ],
+					"port": "3000",
+					"path": [ "api", "patients" ],
+					"query": [
+						{
+							"key": "search",
+							"value": "González"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
