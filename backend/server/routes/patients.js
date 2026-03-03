@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
         // Obtener todos los pacientes y filtrar por el sufijo del ID
         const allPatients = await Patient.find(query)
-          .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+          .select('nombre email telefono cedula foto ultimaVisita proximaCita fechaNacimiento edad')
           .lean();
 
         patients = allPatients.filter(patient =>
@@ -47,14 +47,14 @@ router.get('/', async (req, res) => {
         ];
 
         patients = await Patient.find(query)
-          .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+          .select('nombre email telefono cedula foto ultimaVisita proximaCita fechaNacimiento edad')
           .sort({ ultimaVisita: -1 })
           .lean();
       }
     } else {
       // Sin búsqueda, devolver todos
       patients = await Patient.find(query)
-        .select('nombre email telefono cedula foto ultimaVisita proximaCita')
+        .select('nombre email telefono cedula foto ultimaVisita proximaCita fechaNacimiento edad')
         .sort({ ultimaVisita: -1 })
         .lean();
     }
@@ -69,7 +69,9 @@ router.get('/', async (req, res) => {
       cedula: patient.cedula,
       foto: patient.foto,
       ultimaVisita: patient.ultimaVisita,
-      proximaCita: patient.proximaCita
+      proximaCita: patient.proximaCita,
+      fechaNacimiento: patient.fechaNacimiento,
+      edad: patient.edad
     }));
 
     res.json(formattedPatients);
