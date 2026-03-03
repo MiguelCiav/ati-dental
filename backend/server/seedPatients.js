@@ -11,8 +11,10 @@ const samplePatients = [
     email: 'maria.gonzalez@email.com',
     telefono: '+34 600 111 222',
     cedula: '12345678A',
-    ultimaVisita: new Date('2023-10-15'),
-    proximaCita: new Date('2023-10-22T10:00:00'),
+    fechaNacimiento: new Date('1985-03-15'),
+    edad: 41,
+    ultimaVisita: new Date('2026-02-15'),
+    proximaCita: new Date('2026-03-22T10:00:00'),
     activo: true
   },
   {
@@ -20,7 +22,9 @@ const samplePatients = [
     email: 'cruiz88@email.com',
     telefono: '+34 600 222 333',
     cedula: '23456789B',
-    ultimaVisita: new Date('2023-10-10'),
+    fechaNacimiento: new Date('1988-07-22'),
+    edad: 37,
+    ultimaVisita: new Date('2026-02-10'),
     proximaCita: null,
     activo: true
   },
@@ -29,8 +33,10 @@ const samplePatients = [
     email: 'laura.b@email.com',
     telefono: '+34 600 333 444',
     cedula: '34567890C',
-    ultimaVisita: new Date('2023-10-02'),
-    proximaCita: new Date('2023-10-25T16:30:00'),
+    fechaNacimiento: new Date('1992-11-08'),
+    edad: 33,
+    ultimaVisita: new Date('2026-01-20'),
+    proximaCita: new Date('2026-03-25T16:30:00'),
     activo: true
   },
   {
@@ -38,7 +44,9 @@ const samplePatients = [
     email: 'jmendez@email.com',
     telefono: '+34 600 444 555',
     cedula: '45678901D',
-    ultimaVisita: new Date('2023-08-12'),
+    fechaNacimiento: new Date('1975-05-30'),
+    edad: 50,
+    ultimaVisita: new Date('2025-12-12'),
     proximaCita: null,
     activo: true
   },
@@ -47,8 +55,43 @@ const samplePatients = [
     email: 'ana.lo@email.com',
     telefono: '+34 600 555 666',
     cedula: '56789012E',
-    ultimaVisita: new Date('2023-10-18'),
-    proximaCita: new Date('2023-10-30T09:15:00'),
+    fechaNacimiento: new Date('1990-09-18'),
+    edad: 35,
+    ultimaVisita: new Date('2026-02-28'),
+    proximaCita: new Date('2026-03-30T09:15:00'),
+    activo: true
+  },
+  {
+    nombre: 'Pedro Sánchez',
+    email: 'pedro.sanchez@email.com',
+    telefono: '+34 600 666 777',
+    cedula: '67890123F',
+    fechaNacimiento: new Date('2005-12-05'),
+    edad: 20,
+    ultimaVisita: new Date('2026-01-15'),
+    proximaCita: new Date('2026-04-05T11:00:00'),
+    activo: true
+  },
+  {
+    nombre: 'Isabel Fernández',
+    email: 'isabel.f@email.com',
+    telefono: '+34 600 777 888',
+    cedula: '78901234G',
+    fechaNacimiento: new Date('1955-04-20'),
+    edad: 70,
+    ultimaVisita: new Date('2026-02-05'),
+    proximaCita: new Date('2026-03-15T14:00:00'),
+    activo: true
+  },
+  {
+    nombre: 'Roberto García',
+    email: 'roberto.g@email.com',
+    telefono: '+34 600 888 999',
+    cedula: '89012345H',
+    fechaNacimiento: new Date('2010-08-12'),
+    edad: 15,
+    ultimaVisita: new Date('2026-01-25'),
+    proximaCita: new Date('2026-04-10T10:30:00'),
     activo: true
   }
 ];

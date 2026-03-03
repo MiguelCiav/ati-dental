@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { List, UserPlus, User, Phone, X } from 'lucide-react';
+import { List, UserPlus, User, Phone, X, BarChart3 } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -19,6 +19,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       label: t('menu.registerPatient', 'Registrar Paciente'),
       icon: UserPlus,
       path: '/patients/register',
+    },
+    {
+      id: 'reports',
+      label: t('menu.reports', 'Reportes y Estadísticas'),
+      icon: BarChart3,
+      path: '/reports',
     },
     {
       id: 'profile',
