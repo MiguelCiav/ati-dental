@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import './App.css'
 import Login from './auth/Login'
 import PatientsPage from './patients/PatientsPage'
+import ReportsPage from './reports/ReportsPage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<Navigate to="/patients" replace />} />
           <Route path="patients" element={<PatientsPage />} />
           <Route path="patients/register" element={<RegisterPatientPage />} />
+          <Route path="reports" element={<ReportsPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="contact" element={<ContactPage />} />
         </Route>
