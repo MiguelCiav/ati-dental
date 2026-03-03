@@ -28,6 +28,7 @@ mongoose.connect(mongoURI, {
 const patientsRoutes = require('./routes/patients');
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
+const reportsRoutes = require('./routes/reports');
 
 // Ruta principal para verificar el estado de la API 
 app.get('/', (req, res) => {
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 app.use('/api/patients', patientsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/reports', reportsRoutes);
 
 const PORT = process.env.PORT || 3000;
 
