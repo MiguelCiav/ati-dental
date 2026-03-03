@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, Button } from '../components';
 import { FileDown, TrendingUp } from 'lucide-react';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import patientsService from '../services/patientsService';
 import { exportChartsToPDF } from '../utils/pdfExport';
 import './ReportsPage.css';
@@ -35,7 +35,6 @@ const ReportsPage = () => {
       return {
         patientsByMonth: [],
         patientsByAge: [],
-        patientsByGender: [],
         totalPatients: 0,
         avgAge: 0
       };
@@ -48,11 +47,6 @@ const ReportsPage = () => {
       '31-50': 0,
       '51-70': 0,
       '70+': 0
-    };
-    const genderData = {
-      'Masculino': 0,
-      'Femenino': 0,
-      'Otro': 0
     };
 
     let totalAge = 0;
@@ -72,10 +66,6 @@ const ReportsPage = () => {
         else if (patient.edad <= 70) ageGroups['51-70']++;
         else ageGroups['70+']++;
       }
-
-      if (patient.genero) {
-        genderData[patient.genero] = (genderData[patient.genero] || 0) + 1;
-      }
     });
 
     const patientsByMonth = Object.entries(monthData)
@@ -92,14 +82,9 @@ const ReportsPage = () => {
       cantidad
     }));
 
-    const patientsByGender = Object.entries(genderData)
-      .filter(([_, count]) => count > 0)
-      .map(([genero, cantidad]) => ({ genero, cantidad }));
-
     return {
       patientsByMonth,
       patientsByAge,
-      patientsByGender,
       totalPatients: pacientes.length,
       avgAge: pacientes.length > 0 ? Math.round(totalAge / pacientes.length) : 0
     };
