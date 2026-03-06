@@ -26,6 +26,11 @@ const patientSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  genero: {
+    type: String,
+    enum: ['Masculino', 'Femenino'],
+    default: 'Masculino'
+  },
   fechaNacimiento: {
     type: Date
   },
@@ -47,6 +52,26 @@ const patientSchema = new mongoose.Schema({
   activo: {
     type: Boolean,
     default: true
+  },
+  tipoSangre: {
+    type: String,
+    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    default: null
+  },
+  alergias: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  condicionesMedicas: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  notasAdicionales: {
+    type: String,
+    trim: true,
+    default: null
   }
 }, {
   timestamps: true
@@ -56,7 +81,7 @@ const patientSchema = new mongoose.Schema({
 patientSchema.index({ nombre: 'text', email: 'text', cedula: 'text' });
 
 // Método virtual para obtener el ID en formato #P-XXXX
-patientSchema.virtual('displayId').get(function() {
+patientSchema.virtual('displayId').get(function () {
   return `#P-${this._id.toString().slice(-4).toUpperCase()}`;
 });
 
