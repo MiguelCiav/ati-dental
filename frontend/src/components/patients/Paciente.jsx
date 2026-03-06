@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { Eye, Edit, Calendar } from 'lucide-react';
 import './Paciente.css';
 
 const Paciente = ({ paciente, onView, onEdit }) => {
-  // Generar iniciales del nombre
+  const { t } = useTranslation('common');
+
   const getInitials = (name) => {
     const words = name.trim().split(' ');
     if (words.length >= 2) {
@@ -11,7 +13,6 @@ const Paciente = ({ paciente, onView, onEdit }) => {
     return name.substring(0, 2).toUpperCase();
   };
 
-  // Generar color de fondo basado en el nombre
   const getAvatarColor = (name) => {
     const colors = [
       '#5e3a8f', // purple
@@ -28,17 +29,17 @@ const Paciente = ({ paciente, onView, onEdit }) => {
   const formatDate = (dateString) => {
     if (!dateString) return '-';
     const date = new Date(dateString);
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const months = t('patientList.months').split('_');
     return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
   };
 
   const formatDateTime = (dateString) => {
     if (!dateString) return null;
     const date = new Date(dateString);
-    const months = ['Oct', 'Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'];
+    const months = t('patientList.months').split('_');
     const day = date.getDate();
     const month = months[date.getMonth()];
-    const hours = date.getHours().toString().padStart(2, '0');
+    const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
@@ -87,7 +88,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
         <button
           className="action-button view-button"
           onClick={() => onView(paciente)}
-          title="Ver detalles"
+          title={t('patientList.viewDetails')}
           data-testid="view-patient-btn"
         >
           <Eye size={18} />
@@ -95,7 +96,7 @@ const Paciente = ({ paciente, onView, onEdit }) => {
         <button
           className="action-button edit-button"
           onClick={() => onEdit(paciente)}
-          title="Editar"
+          title={t('patientList.editPatient')}
           data-testid="edit-patient-btn"
         >
           <Edit size={18} />
@@ -106,4 +107,3 @@ const Paciente = ({ paciente, onView, onEdit }) => {
 };
 
 export default Paciente;
-

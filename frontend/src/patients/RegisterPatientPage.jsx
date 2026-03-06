@@ -26,13 +26,13 @@ const RegisterPatientPage = () => {
     });
 
     const generoOptions = [
-        { value: '', label: 'Seleccionar...', disabled: true },
-        { value: 'Masculino', label: 'Masculino' },
-        { value: 'Femenino', label: 'Femenino' }
+        { value: '', label: t('registerPatient.selectOption'), disabled: true },
+        { value: 'Masculino', label: t('registerPatient.male') },
+        { value: 'Femenino', label: t('registerPatient.female') }
     ];
 
     const tipoSangreOptions = [
-        { value: '', label: 'Seleccionar...', disabled: true },
+        { value: '', label: t('registerPatient.selectOption'), disabled: true },
         { value: 'A+', label: 'A+' },
         { value: 'A-', label: 'A-' },
         { value: 'B+', label: 'B+' },
@@ -60,7 +60,7 @@ const RegisterPatientPage = () => {
             await patientsService.createPatient(formData);
             navigate('/patients');
         } catch (err) {
-            setError(err.message || 'Error al registrar el paciente');
+            setError(err.message || t('registerPatient.errorDefault'));
         } finally {
             setLoading(false);
         }
@@ -70,10 +70,10 @@ const RegisterPatientPage = () => {
         <div className="page-container">
             <div className="page-header" style={{ marginBottom: '24px' }}>
                 <h1 style={{ color: '#5e3a8f', fontSize: '28px', marginBottom: '8px' }}>
-                    Nuevo Paciente
+                    {t('registerPatient.title')}
                 </h1>
                 <p style={{ color: '#666', fontSize: '15px' }}>
-                    Complete el formulario para registrar un nuevo paciente en el sistema.
+                    {t('registerPatient.subtitle')}
                 </p>
             </div>
 
@@ -81,7 +81,7 @@ const RegisterPatientPage = () => {
                 <Card padding="large" style={{ marginBottom: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '8px', color: '#333', borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
                         <User size={20} color="#5e3a8f" />
-                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Datos Personales</h2>
+                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{t('registerPatient.personalData')}</h2>
                     </div>
 
                     {error && (
@@ -92,15 +92,15 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Nombre Completo"
+                            label={t('registerPatient.fullName')}
                             name="nombre"
                             value={formData.nombre}
                             onChange={handleChange}
-                            placeholder="Ej. Juan Pérez"
+                            placeholder={t('registerPatient.fullNamePlaceholder')}
                             required
                         />
                         <InputField
-                            label="Cédula de Identidad"
+                            label={t('registerPatient.idCard')}
                             name="cedula"
                             value={formData.cedula}
                             onChange={handleChange}
@@ -109,7 +109,7 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Fecha de Nacimiento"
+                            label={t('registerPatient.birthDate')}
                             type="date"
                             name="fechaNacimiento"
                             value={formData.fechaNacimiento}
@@ -117,14 +117,14 @@ const RegisterPatientPage = () => {
                             icon={Calendar}
                         />
                         <SelectField
-                            label="Género"
+                            label={t('registerPatient.gender')}
                             name="genero"
                             value={formData.genero}
                             onChange={handleChange}
                             options={generoOptions}
                         />
                         <InputField
-                            label="Teléfono"
+                            label={t('registerPatient.phone')}
                             name="telefono"
                             value={formData.telefono}
                             onChange={handleChange}
@@ -135,12 +135,12 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Correo Electrónico"
+                            label={t('registerPatient.email')}
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="correo@ejemplo.com"
+                            placeholder={t('registerPatient.emailPlaceholder')}
                             icon={Mail}
                             required
                         />
@@ -148,25 +148,25 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '10px' }}>
                         <InputField
-                            label="Dirección de Residencia"
+                            label={t('registerPatient.address')}
                             name="direccion"
                             value={formData.direccion}
                             onChange={handleChange}
-                            placeholder="Calle, Número, Ciudad"
+                            placeholder={t('registerPatient.addressPlaceholder')}
                         />
                     </div>
                 </Card>
 
-                {/* Información Clínica Básica Section */}
+                {/* Clinical Info Section */}
                 <Card padding="large" style={{ marginBottom: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '8px', color: '#333', borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
                         <FileText size={20} color="#5e3a8f" />
-                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Información Clínica Básica</h2>
+                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{t('registerPatient.clinicalInfo')}</h2>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 300px) 1fr', gap: '20px', marginBottom: '20px' }}>
                         <SelectField
-                            label="Tipo de Sangre"
+                            label={t('registerPatient.bloodType')}
                             name="tipoSangre"
                             value={formData.tipoSangre}
                             onChange={handleChange}
@@ -176,11 +176,11 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Alergias Conocidas"
+                            label={t('registerPatient.allergies')}
                             name="alergias"
                             value={formData.alergias}
                             onChange={handleChange}
-                            placeholder="Listar medicamentos, alimentos o materiales (ej. Penicilina, Látex)..."
+                            placeholder={t('registerPatient.allergiesPlaceholder')}
                             multiline
                             rows={3}
                         />
@@ -188,11 +188,11 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Condiciones Médicas Previas"
+                            label={t('registerPatient.medicalConditions')}
                             name="condicionesMedicas"
                             value={formData.condicionesMedicas}
                             onChange={handleChange}
-                            placeholder="Diabetes, Hipertensión, Cirugías recientes..."
+                            placeholder={t('registerPatient.medicalConditionsPlaceholder')}
                             multiline
                             rows={3}
                         />
@@ -200,7 +200,7 @@ const RegisterPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '10px' }}>
                         <InputField
-                            label="Notas Adicionales"
+                            label={t('registerPatient.additionalNotes')}
                             name="notasAdicionales"
                             value={formData.notasAdicionales}
                             onChange={handleChange}
@@ -212,10 +212,10 @@ const RegisterPatientPage = () => {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '30px' }}>
                     <Button type="button" variant="outline" onClick={() => navigate('/patients')} disabled={loading}>
-                        Cancelar
+                        {t('registerPatient.cancel')}
                     </Button>
                     <Button type="submit" variant="primary" loading={loading} disabled={loading}>
-                        {loading ? 'Guardando...' : 'Guardar Paciente'}
+                        {loading ? t('registerPatient.saving') : t('registerPatient.save')}
                     </Button>
                 </div>
             </form>

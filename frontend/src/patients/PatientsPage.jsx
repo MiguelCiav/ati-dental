@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Card } from '../components';
 import { SearchAndFilter, ListaPacientes } from '../components/patients';
 import patientsService from '../services/patientsService';
 
 const PatientsPage = () => {
+  const { t } = useTranslation('common');
   const navigate = useNavigate();
-  const location = useLocation();
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Initialize from location state if available (from back button), otherwise use defaults
-  const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
-  const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || 'recientes');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('recientes');
 
-  // Cargar pacientes al montar el componente y cuando cambia el término de búsqueda
   useEffect(() => {
     const fetchPatients = async () => {
       setLoading(true);
@@ -23,20 +22,15 @@ const PatientsPage = () => {
         setPacientes(data);
       } catch (error) {
         console.error('Error al cargar pacientes:', error);
-        // Mantener la lista actual en caso de error
       } finally {
         setLoading(false);
       }
     };
 
-    // Debounce simple: esperar 500ms después de que el usuario deje de escribir
     const timeoutId = setTimeout(fetchPatients, 500);
-
-    // Limpiar el timeout si el usuario sigue escribiendo
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
-  // Ordenar pacientes según el criterio seleccionado
   const sortedPacientes = [...pacientes].sort((a, b) => {
     switch (sortOrder) {
       case 'recientes':
@@ -53,7 +47,6 @@ const PatientsPage = () => {
   });
 
   const handleViewPaciente = (paciente) => {
-    // Navegar a la página de detalles del paciente, enviando los filtros actuales
     navigate(`/patients/${paciente._id}`, {
       state: { searchTerm, sortOrder }
     });
@@ -68,8 +61,8 @@ const PatientsPage = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Listado de Pacientes</h1>
-        <p>Gestiona y consulta el historial de todos tus pacientes.</p>
+        <h1>{t('patients.listTitle')}</h1>
+        <p>{t('patients.listSubtitle')}</p>
       </div>
 
       <Card padding="medium" style={{ marginBottom: '24px' }}>
@@ -84,7 +77,7 @@ const PatientsPage = () => {
       <Card noPadding>
         {loading ? (
           <div style={{ padding: '60px 20px', textAlign: 'center', color: '#6b7280' }}>
-            Cargando pacientes...
+            {t('patients.loading')}
           </div>
         ) : (
           <ListaPacientes
@@ -99,4 +92,3 @@ const PatientsPage = () => {
 };
 
 export default PatientsPage;
-
