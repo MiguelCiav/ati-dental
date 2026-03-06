@@ -60,6 +60,64 @@ const patientsService = {
       console.error('Error al obtener paciente:', error);
       throw error;
     }
+  },
+
+  /**
+   * Crear un nuevo paciente
+   * @param {Object} patientData - Datos del paciente
+   * @returns {Promise<Object>} Paciente creado
+   */
+  async createPatient(patientData) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/patients`, {
+        method: 'POST',
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(patientData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+      }
+
+    } catch (error) {
+      console.error('Error al crear paciente:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Actualizar un paciente existente
+   * @param {string} id - ID del paciente
+   * @param {Object} patientData - Nuevos datos del paciente
+   * @returns {Promise<Object>} Paciente actualizado
+   */
+  async updatePatient(id, patientData) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/patients/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(patientData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al actualizar paciente:', error);
+      throw error;
+    }
   }
 };
 

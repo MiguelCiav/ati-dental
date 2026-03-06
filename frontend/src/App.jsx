@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next'
 import './App.css'
 import Login from './auth/Login'
 import PatientsPage from './patients/PatientsPage'
+import RegisterPatientPage from './patients/RegisterPatientPage'
+import PatientDetailsPage from './patients/PatientDetailsPage'
+import EditPatientPage from './patients/EditPatientPage'
 import ReportsPage from './reports/ReportsPage'
 
 function App() {
@@ -19,6 +22,8 @@ function App() {
           <Route index element={<Navigate to="/patients" replace />} />
           <Route path="patients" element={<PatientsPage />} />
           <Route path="patients/register" element={<RegisterPatientPage />} />
+          <Route path="patients/:id" element={<PatientDetailsPage />} />
+          <Route path="patients/:id/edit" element={<EditPatientPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="contact" element={<ContactPage />} />
@@ -28,17 +33,7 @@ function App() {
   )
 }
 
-const RegisterPatientPage = () => {
-  const { t } = useTranslation('common');
-  return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>{t('menu.registerPatient', 'Registrar Paciente')}</h1>
-        <p>{t('menu.registerPatientHint', 'Formulario de registro de pacientes.')}</p>
-      </div>
-    </div>
-  );
-}
+
 
 const ContactPage = () => {
   const { t } = useTranslation('common');
