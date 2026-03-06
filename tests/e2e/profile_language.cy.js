@@ -1,7 +1,15 @@
 describe('Preferencia de Idioma en Perfil', () => {
     beforeEach(() => {
-        // En una prueba completa de E2E, nos aseguramos de estar logueados si la ruta lo requiere.
-        // Si el sistema no requiere login en ambiente de prueba, simplemente visitamos la ruta.
+        // Hacemos login explícito a través de la interfaz de usuario
+        cy.visit('/login');
+        cy.get('input[name="email"]').type('admin@atidental.com');
+        cy.get('input[name="password"]').type('password123');
+        cy.get('button[type="submit"]').click();
+
+        // Esperamos que se complete el login verificando la redirección
+        cy.url().should('include', '/patients');
+
+        // Vamos a la página de perfil
         cy.visit('/profile');
     });
 
