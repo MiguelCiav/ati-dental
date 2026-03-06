@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Card } from '../components';
 import { SearchAndFilter, ListaPacientes } from '../components/patients';
 import patientsService from '../services/patientsService';
 
 const PatientsPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('recientes');
+
+  // Initialize from location state if available (from back button), otherwise use defaults
+  const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
+  const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || 'recientes');
 
   // Cargar pacientes al montar el componente y cuando cambia el término de búsqueda
   useEffect(() => {
@@ -26,7 +31,7 @@ const PatientsPage = () => {
 
     // Debounce simple: esperar 500ms después de que el usuario deje de escribir
     const timeoutId = setTimeout(fetchPatients, 500);
-    
+
     // Limpiar el timeout si el usuario sigue escribiendo
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
@@ -48,13 +53,16 @@ const PatientsPage = () => {
   });
 
   const handleViewPaciente = (paciente) => {
-    console.log('Ver paciente:', paciente);
-    // Aquí se puede navegar a la página de detalles del paciente
+    // Navegar a la página de detalles del paciente, enviando los filtros actuales
+    navigate(`/patients/${paciente._id}`, {
+      state: { searchTerm, sortOrder }
+    });
   };
 
   const handleEditPaciente = (paciente) => {
-    console.log('Editar paciente:', paciente);
-    // Aquí se puede abrir un modal para editar el paciente
+    navigate(`/patients/${paciente._id}/edit`, {
+      state: { searchTerm, sortOrder }
+    });
   };
 
   return (

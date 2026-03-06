@@ -3,6 +3,7 @@ export { default as Layout } from '../layouts/Layout';
 
 // Base Components
 export { default as InputField } from './ui/InputField';
+export { default as SelectField } from './ui/SelectField';
 export { default as Button } from './ui/Button';
 export { default as Modal } from './ui/Modal';
 export { default as Card } from './ui/Card';
