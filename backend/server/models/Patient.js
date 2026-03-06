@@ -55,7 +55,7 @@ const patientSchema = new mongoose.Schema({
   },
   tipoSangre: {
     type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', null],
     default: null
   },
   alergias: {
