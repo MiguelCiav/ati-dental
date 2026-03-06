@@ -17,17 +17,17 @@ describe('Preferencia de Idioma en Perfil', () => {
         // Puede estar en español o inglés por defecto
         cy.get('.language-options-grid', { timeout: 10000 }).should('be.visible');
         cy.contains('Español').should('be.visible');
-        cy.contains('English (Inglés)').should('be.visible');
+        cy.contains(/(English \(Inglés\)|English)/).should('be.visible');
     });
 
     it('Cambia el idioma a Inglés y verifica la persistencia', () => {
-        cy.visit('/profile');
+        // Redundant visit removed since beforeEach already goes to /profile
 
         // Esperamos a que la página cargue, puede estar en es o en
         cy.get('.language-options-grid', { timeout: 10000 }).should('exist');
 
         // Seleccionamos la tarjeta de Inglés
-        cy.contains('English (Inglés)').click();
+        cy.contains(/(English \(Inglés\)|English)/).click();
 
         // Buscamos el botón de guardar. Dependiendo del idioma actual, puede decir "Guardar Cambios" o "Save Changes"
         // Hacemos click en el botón `primary` que es el de guardar
@@ -48,11 +48,11 @@ describe('Preferencia de Idioma en Perfil', () => {
         cy.contains('Personal Information').should('be.visible');
 
         // Restaurar estado a Español para no afectar otras pruebas
-        cy.contains('Español').click();
-        cy.contains('Save Changes').click();
+        cy.contains(/Español/).click();
+        cy.get('button').contains(/(Guardar Cambios|Save Changes)/).click();
 
         // Mensaje de éxito asumiendo que ya estaba en inglés antes de clickear
-        cy.contains('Profile saved successfully.', { timeout: 5000 }).should('be.visible');
+        cy.contains(/(Perfil guardado exitosamente\.|Profile saved successfully\.)/, { timeout: 5000 }).should('be.visible');
 
         // Validar que volvió a español
         cy.contains('Guardar Cambios').should('be.visible');

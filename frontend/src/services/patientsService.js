@@ -1,6 +1,4 @@
-// URL base de la API desde variables de entorno o localhost por defecto
-// Nota: En Docker dev, el backend está en puerto 5000 (mapeado 5000:3000)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 /**
  * Servicio para interactuar con el endpoint de pacientes

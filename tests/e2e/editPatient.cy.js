@@ -1,4 +1,13 @@
 describe('Editar Paciente (US-09)', () => {
+    beforeEach(() => {
+        // Login before accessing protected routes
+        cy.visit('/login');
+        cy.get('input[name="email"]').type('admin@atidental.com');
+        cy.get('input[name="password"]').type('password123');
+        cy.get('button[type="submit"]').click();
+        cy.url().should('include', '/patients');
+    });
+
     it('Debe editar la información de un paciente y visualizar los cambios', () => {
         // 1. Ir a la lista de pacientes
         cy.visit('/patients');

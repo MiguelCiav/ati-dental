@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card } from '../components';
 import { SearchAndFilter, ListaPacientes } from '../components/patients';
@@ -8,11 +8,12 @@ import patientsService from '../services/patientsService';
 const PatientsPage = () => {
   const { t } = useTranslation('common');
   const navigate = useNavigate();
+  const location = useLocation();
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('recientes');
+  const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
+  const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || 'recientes');
 
   useEffect(() => {
     const fetchPatients = async () => {
