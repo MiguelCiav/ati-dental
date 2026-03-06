@@ -34,6 +34,9 @@ const patientSchema = new mongoose.Schema({
   fechaNacimiento: {
     type: Date
   },
+  edad: {
+    type: Number
+  },
   direccion: {
     type: String,
     trim: true

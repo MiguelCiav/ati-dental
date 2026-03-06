@@ -11,6 +11,7 @@ import PatientsPage from './patients/PatientsPage'
 import RegisterPatientPage from './patients/RegisterPatientPage'
 import PatientDetailsPage from './patients/PatientDetailsPage'
 import EditPatientPage from './patients/EditPatientPage'
+import ReportsPage from './reports/ReportsPage'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="patients/register" element={<RegisterPatientPage />} />
           <Route path="patients/:id" element={<PatientDetailsPage />} />
           <Route path="patients/:id/edit" element={<EditPatientPage />} />
+          <Route path="reports" element={<ReportsPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="contact" element={<ContactPage />} />
         </Route>
