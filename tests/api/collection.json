@@ -310,6 +310,60 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "PATCH /api/users/profile - Actualizar idioma del usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Respuesta indica éxito', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"    pm.expect(jsonData.message).to.eql('Idioma actualizado correctamente');",
+							"    pm.expect(jsonData.data.language).to.eql('en');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"language\":\"en\"}"
+				},
+				"url": {
+					"raw": "http://api:3000/api/users/profile",
+					"protocol": "http",
+					"host": [
+						"api"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
