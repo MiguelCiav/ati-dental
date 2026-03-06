@@ -4,6 +4,40 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import PatientDetailsPage from './PatientDetailsPage';
 import patientsService from '../services/patientsService';
 
+// Map of i18n keys → Spanish values (matches es/common.json)
+const translations = {
+    'patientDetails.loadingPatient': 'Cargando información del paciente...',
+    'patientDetails.patientNotFound': 'No se encontró el paciente solicitado.',
+    'patientDetails.backToList': 'Volver al listado',
+    'patientDetails.breadcrumbPatients': 'Pacientes',
+    'patientDetails.breadcrumbDetails': 'Ficha del Paciente',
+    'patientDetails.editBtn': 'Editar',
+    'patientDetails.newAppointmentBtn': 'Nueva Cita',
+    'patientDetails.personalInfo': 'Información Personal',
+    'patientDetails.email': 'Correo Electrónico',
+    'patientDetails.address': 'Dirección',
+    'patientDetails.notSpecified': 'No especificado',
+    'patientDetails.notSpecifiedFem': 'No especificada',
+    'patientDetails.clinicalInfo': 'Información Clínica Básica',
+    'patientDetails.bloodType': 'Tipo de Sangre',
+    'patientDetails.allergies': 'Alergias Conocidas',
+    'patientDetails.noneRegistered': 'Ninguna registrada',
+    'patientDetails.medicalConditions': 'Condiciones Médicas Previas',
+    'patientDetails.additionalNotes': 'Notas Adicionales',
+    'patientDetails.none': 'Ninguna',
+    'patientDetails.nextAppointment': 'PRÓXIMA CITA',
+    'patientDetails.lastVisit': 'ÚLTIMA VISITA',
+    'patientDetails.treatmentHistory': 'Historial de Tratamientos',
+    'patientDetails.addTreatment': 'Añadir Tratamiento',
+    'patientDetails.modifyTreatment': 'Modificar',
+    'patientDetails.deleteTreatment': 'Eliminar',
+    'patientDetails.years': 'años',
+};
+
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({ t: (key) => translations[key] ?? key, i18n: { language: 'es' } })
+}));
+
 jest.mock('../services/patientsService', () => ({
     getPatientById: jest.fn()
 }));
@@ -26,7 +60,7 @@ describe('PatientDetailsPage Component', () => {
     it('muestra estado de carga inicialmente', () => {
         patientsService.getPatientById.mockImplementation(() => new Promise(() => { }));
         renderWithRouter(<PatientDetailsPage />);
-        expect(screen.getByText('Cargando información del paciente...')).toBeInTheDOM;
+        expect(screen.getByText('Cargando información del paciente...')).toBeInTheDocument();
     });
 
     it('renderiza la información del paciente correctamente', async () => {
@@ -47,11 +81,10 @@ describe('PatientDetailsPage Component', () => {
         renderWithRouter(<PatientDetailsPage />);
 
         await waitFor(() => {
-            expect(screen.getByText('Juan Pérez')).toBeInTheDOM;
-            // The display ID text logic was slightly changed in the layout
-            expect(screen.getByText((content, element) => content.includes('V-12345678'))).toBeInTheDOM;
-            expect(screen.getByText('juan@test.com')).toBeInTheDOM;
-            expect(screen.getByText('O+')).toBeInTheDOM;
+            expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
+            expect(screen.getByText((content) => content.includes('V-12345678'))).toBeInTheDocument();
+            expect(screen.getByText('juan@test.com')).toBeInTheDocument();
+            expect(screen.getByText('O+')).toBeInTheDocument();
         });
     });
 
@@ -61,8 +94,8 @@ describe('PatientDetailsPage Component', () => {
         renderWithRouter(<PatientDetailsPage />);
 
         await waitFor(() => {
-            expect(screen.getByText('Patient not found')).toBeInTheDOM;
-            expect(screen.getByText('Volver al listado')).toBeInTheDOM;
+            expect(screen.getByText('Patient not found')).toBeInTheDocument();
+            expect(screen.getByText('Volver al listado')).toBeInTheDocument();
         });
     });
 });

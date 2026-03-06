@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, Button } from '../components';
 import { FileDown, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -9,6 +10,7 @@ import './ReportsPage.css';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
 const ReportsPage = () => {
+  const { t } = useTranslation('common');
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -96,7 +98,7 @@ const ReportsPage = () => {
       await exportChartsToPDF(chartsContainerRef.current, 'reporte-estadisticas');
     } catch (error) {
       console.error('Error al exportar PDF:', error);
-      alert('Error al exportar el PDF. Por favor, intenta nuevamente.');
+      alert(t('reports.exportError'));
     } finally {
       setExporting(false);
     }
@@ -106,7 +108,7 @@ const ReportsPage = () => {
     return (
       <div className="page-container">
         <div style={{ padding: '60px 20px', textAlign: 'center', color: '#6b7280' }}>
-          Cargando reportes...
+          {t('reports.loading')}
         </div>
       </div>
     );
@@ -118,8 +120,8 @@ const ReportsPage = () => {
     <div className="page-container">
       <div className="page-header">
         <div>
-          <h1>Reportes y Estadísticas</h1>
-          <p>Visualiza métricas y estadísticas de los pacientes del consultorio.</p>
+          <h1>{t('reports.title')}</h1>
+          <p>{t('reports.subtitle')}</p>
         </div>
         <Button
           onClick={handleExportPDF}
@@ -127,7 +129,7 @@ const ReportsPage = () => {
           variant="primary"
         >
           <FileDown size={20} />
-          {exporting ? 'Exportando...' : 'Exportar a PDF'}
+          {exporting ? t('reports.exporting') : t('reports.exportPDF')}
         </Button>
       </div>
 
@@ -135,19 +137,19 @@ const ReportsPage = () => {
         <Card padding="medium">
           <div className="stat-item">
             <div className="stat-value">{chartData.totalPatients}</div>
-            <div className="stat-label">Total Pacientes</div>
+            <div className="stat-label">{t('reports.totalPatients')}</div>
           </div>
         </Card>
         <Card padding="medium">
           <div className="stat-item">
             <div className="stat-value">{chartData.avgAge}</div>
-            <div className="stat-label">Edad Promedio</div>
+            <div className="stat-label">{t('reports.avgAge')}</div>
           </div>
         </Card>
         <Card padding="medium">
           <div className="stat-item">
             <div className="stat-value">{chartData.patientsByMonth.reduce((acc, m) => acc + m.visitas, 0)}</div>
-            <div className="stat-label">Visitas (6 meses)</div>
+            <div className="stat-label">{t('reports.visitsLast6Months')}</div>
           </div>
         </Card>
       </div>
@@ -155,7 +157,7 @@ const ReportsPage = () => {
       <div ref={chartsContainerRef} className="charts-container">
         <Card padding="medium">
           <div className="chart-header">
-            <h2>Visitas por Mes</h2>
+            <h2>{t('reports.visitsByMonth')}</h2>
             <TrendingUp size={24} />
           </div>
           <div className="chart-wrapper">
@@ -166,7 +168,7 @@ const ReportsPage = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="visitas" stroke="#0088FE" strokeWidth={2} name="Visitas" />
+                <Line type="monotone" dataKey="visitas" stroke="#0088FE" strokeWidth={2} name={t('reports.visits')} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -174,7 +176,7 @@ const ReportsPage = () => {
 
         <Card padding="medium">
           <div className="chart-header">
-            <h2>Pacientes por Rango de Edad</h2>
+            <h2>{t('reports.patientsByAgeRange')}</h2>
           </div>
           <div className="chart-wrapper">
             <ResponsiveContainer width="100%" height={300}>
@@ -184,7 +186,7 @@ const ReportsPage = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="cantidad" fill="#00C49F" name="Cantidad" />
+                <Bar dataKey="cantidad" fill="#00C49F" name={t('reports.quantity')} />
               </BarChart>
             </ResponsiveContainer>
           </div>

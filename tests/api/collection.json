@@ -22,12 +22,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/",
+					"raw": "http://api:3000/",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						""
 					]
@@ -71,12 +71,12 @@
 					"raw": "{\"email\":\"admin@atidental.com\",\"password\":\"password123\"}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/auth/login",
+					"raw": "http://api:3000/api/auth/login",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -125,12 +125,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/api/patients",
+					"raw": "http://api:3000/api/patients",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients"
@@ -181,12 +181,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/api/patients?search=Maria",
+					"raw": "http://api:3000/api/patients?search=Maria",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients"
@@ -235,12 +235,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/api/patients?search=",
+					"raw": "http://api:3000/api/patients?search=",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients"
@@ -291,12 +291,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/api/patients?search=González",
+					"raw": "http://api:3000/api/patients?search=González",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients"
@@ -353,12 +353,12 @@
 					"raw": "{\"nombre\":\"Paciente Postman\",\"email\":\"postman_{{$randomInt}}@test.com\",\"telefono\":\"0000000\",\"cedula\":\"V-POSTMAN-{{$randomInt}}\",\"genero\":\"Masculino\",\"tipoSangre\":\"O+\",\"alergias\":\"Ninguna\",\"condicionesMedicas\":\"Ninguna\",\"notasAdicionales\":\"Prueba desde postman\"}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/patients",
+					"raw": "http://api:3000/api/patients",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients"
@@ -397,12 +397,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/api/patients/{{lastCreatedPatientId}}",
+					"raw": "http://api:3000/api/patients/{{lastCreatedPatientId}}",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients",
@@ -450,16 +450,123 @@
 					"raw": "{\"nombre\":\"Paciente Postman Editado\",\"direccion\":\"Nueva Direccion\"}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/patients/{{lastCreatedPatientId}}",
+					"raw": "http://api:3000/api/patients/{{lastCreatedPatientId}}",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"api"
 					],
-					"port": "5000",
+					"port": "3000",
 					"path": [
 						"api",
 						"patients",
 						"{{lastCreatedPatientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/users/profile - Actualizar idioma del usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Respuesta indica éxito', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"    pm.expect(jsonData.message).to.eql('Idioma actualizado correctamente');",
+							"    pm.expect(jsonData.data.language).to.eql('en');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"language\":\"en\"}"
+				},
+				"url": {
+					"raw": "http://api:3000/api/users/profile",
+					"protocol": "http",
+					"host": [
+						"api"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/users/profile - Restaurar idioma a español",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Estado es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Respuesta indica éxito y en idioma es', function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"    pm.expect(jsonData.data.language).to.eql('es');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"language\":\"es\"}"
+				},
+				"url": {
+					"raw": "http://api:3000/api/users/profile",
+					"protocol": "http",
+					"host": [
+						"api"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"profile"
 					]
 				}
 			},

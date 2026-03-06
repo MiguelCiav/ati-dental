@@ -1,6 +1,13 @@
 describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
     beforeEach(() => {
-        // Visitar la página de pacientes antes de cada test
+        // Login before accessing protected routes
+        cy.visit('/login');
+        cy.get('input[name="email"]').type('admin@atidental.com');
+        cy.get('input[name="password"]').type('password123');
+        cy.get('button[type="submit"]').click();
+        cy.url().should('include', '/patients');
+
+        // Visitar la página de pacientes
         cy.visit('/patients');
     });
 
@@ -134,4 +141,3 @@ describe('Listado de Pacientes - Búsqueda y Filtrado', () => {
         cy.get('[data-testid="edit-patient-btn"]').should('be.visible');
     });
 });
-

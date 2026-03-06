@@ -86,7 +86,7 @@ const ProfilePage = () => {
         setMessage('');
         try {
             const token = localStorage.getItem('token');
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const apiUrl = import.meta.env.VITE_API_URL || '/api';
             const res = await fetch(`${apiUrl}/users/profile`, {
                 method: 'PATCH',
                 headers: {

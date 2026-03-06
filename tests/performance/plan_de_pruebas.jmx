@@ -26,7 +26,7 @@
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
-      
+
         <!-- 1. LOGIN -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login Auth" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
@@ -34,7 +34,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;email&quot;:&quot;admin@atidental.com&quot;,&quot;password&quot;:&quot;password123&quot;}</stringProp>
+                <stringProp name="Argument.value">{"email":&quot;admin@atidental.com&quot;,"password":&quot;password123&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -66,7 +66,7 @@
           </JSONPostProcessor>
           <hashTree/>
         </hashTree>
-        
+
         <!-- GLOBAL HEADERS: Aplican a todas las peticiones debajo del Login -->
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Global  Headers" enabled="true">
           <collectionProp name="HeaderManager.headers">
@@ -91,8 +91,8 @@
           <stringProp name="HTTPSampler.port">3000</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <stringProp name="HTTPSampler.path">/api/auth/login</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -110,7 +110,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;nombre&quot;:&quot;PerfTest&quot;,&quot;email&quot;:&quot;perf${__UUID()}@test.com&quot;,&quot;telefono&quot;:&quot;000000&quot;,&quot;cedula&quot;:&quot;V-PERF-${__UUID()}&quot;,&quot;genero&quot;:&quot;Femenino&quot;,&quot;tipoSangre&quot;:&quot;A+&quot;,&quot;alergias&quot;:&quot;Polen&quot;,&quot;condicionesMedicas&quot;:&quot;Asma&quot;,&quot;notasAdicionales&quot;:&quot;Prueba de carga&quot;}</stringProp>
+                <stringProp name="Argument.value">{"nombre":&quot;PerfTest&quot;,"email":&quot;perf${__UUID()}@test.com&quot;,"telefono":&quot;000000&quot;,"cedula":&quot;V-PERF-${__UUID()}&quot;,"genero":&quot;Femenino&quot;,"tipoSangre":&quot;A+&quot;,"alergias":&quot;Polen&quot;,"condicionesMedicas":&quot;Asma&quot;,"notasAdicionales":&quot;Prueba de carga&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -166,7 +166,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;nombre&quot;:&quot;PerfTest Editado&quot;,&quot;direccion&quot;:&quot;Dir Actualizada&quot;}</stringProp>
+                <stringProp name="Argument.value">{"nombre":&quot;PerfTest Editado&quot;,"direccion":&quot;Dir Actualizada&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -183,6 +183,48 @@
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
         </HTTPSamplerProxy>
         <hashTree/>
+
+        <!-- 6. PATCH USER LANGUAGE (from test-idiomas) -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Actualizar Idioma Perfil" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{"language":&quot;en&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api</stringProp>
+          <stringProp name="HTTPSampler.port">3000</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/users/profile</stringProp>
+          <stringProp name="HTTPSampler.method">PATCH</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${authToken}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
 
       </hashTree>
     </hashTree>

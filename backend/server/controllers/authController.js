@@ -69,7 +69,8 @@ const login = async (req, res) => {
           nombre: user.nombre,
           email: user.email,
           role: user.role,
-          displayId: user.displayId
+          displayId: user.displayId,
+          language: user.language || 'es'
         }
       }
     });

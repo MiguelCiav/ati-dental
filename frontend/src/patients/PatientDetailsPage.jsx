@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Card, Button } from '../components';
 import {
     ArrowLeft, User, Mail, Phone, Calendar,
@@ -13,6 +14,7 @@ const PatientDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const { t } = useTranslation('common');
     const [patient, setPatient] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -25,7 +27,7 @@ const PatientDetailsPage = () => {
                 const data = await patientsService.getPatientById(id);
                 setPatient(data);
             } catch (err) {
-                setError(err.message || 'Error al cargar la información del paciente.');
+                setError(err.message || t('patientDetails.patientNotFound'));
             } finally {
                 setLoading(false);
             }
@@ -35,12 +37,11 @@ const PatientDetailsPage = () => {
     }, [id]);
 
     const handleBack = () => {
-        // Navigate back but try to preserve any passed state (like search filters)
         navigate('/patients', { state: location.state });
     };
 
     const formatDate = (dateString, includeTime = false) => {
-        if (!dateString) return 'No especificado';
+        if (!dateString) return t('patientDetails.notSpecified');
         const date = new Date(dateString);
 
         const options = { day: 'numeric', month: 'short', year: 'numeric' };
@@ -49,16 +50,15 @@ const PatientDetailsPage = () => {
             options.minute = '2-digit';
         }
 
-        return new Intl.DateTimeFormat('es-ES', options).format(date);
+        return new Intl.DateTimeFormat(t('__locale', { defaultValue: 'en-US' }), options).format(date);
     };
 
-    // Helper function to calculate age
     const calculateAge = (dobString) => {
         if (!dobString) return '';
         const dob = new Date(dobString);
         const diffMs = Date.now() - dob.getTime();
         const ageDt = new Date(diffMs);
-        return Math.abs(ageDt.getUTCFullYear() - 1970) + " años";
+        return Math.abs(ageDt.getUTCFullYear() - 1970) + ' ' + t('patientDetails.years');
     };
 
     // Mock data for treatments since backend doesn't have it yet
@@ -71,7 +71,7 @@ const PatientDetailsPage = () => {
     if (loading) {
         return (
             <div className="page-container" style={{ display: 'flex', justifyContent: 'center', padding: '100px 0' }}>
-                <p style={{ color: '#666' }}>Cargando información del paciente...</p>
+                <p style={{ color: '#666' }}>{t('patientDetails.loadingPatient')}</p>
             </div>
         );
     }
@@ -80,10 +80,10 @@ const PatientDetailsPage = () => {
         return (
             <div className="page-container">
                 <div style={{ backgroundColor: '#fee2e2', color: '#b91c1c', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
-                    {error || 'No se encontró el paciente solicitado.'}
+                    {error || t('patientDetails.patientNotFound')}
                 </div>
                 <Button variant="outline" onClick={handleBack}>
-                    <ArrowLeft size={16} /> Volver al listado
+                    <ArrowLeft size={16} /> {t('patientDetails.backToList')}
                 </Button>
             </div>
         );
@@ -95,17 +95,17 @@ const PatientDetailsPage = () => {
             {/* Breadcrumb & Actions Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <div className="breadcrumb">
-                    <Link to="/patients" state={location.state} className="breadcrumb-link">Pacientes</Link>
+                    <Link to="/patients" state={location.state} className="breadcrumb-link">{t('patientDetails.breadcrumbPatients')}</Link>
                     <ChevronRight size={14} className="breadcrumb-separator" />
-                    <span className="breadcrumb-current">Ficha del Paciente</span>
+                    <span className="breadcrumb-current">{t('patientDetails.breadcrumbDetails')}</span>
                 </div>
 
                 <div className="actions-header">
                     <Button variant="outline" onClick={() => navigate(`/patients/${patient._id}/edit`)} style={{ display: 'flex', gap: '8px', alignItems: 'center', color: '#666', borderColor: '#e0e0e0', backgroundColor: 'white' }}>
-                        <Edit2 size={16} /> Editar
+                        <Edit2 size={16} /> {t('patientDetails.editBtn')}
                     </Button>
                     <Button style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <Calendar size={16} /> Nueva Cita
+                        <Calendar size={16} /> {t('patientDetails.newAppointmentBtn')}
                     </Button>
                 </div>
             </div>
@@ -113,7 +113,7 @@ const PatientDetailsPage = () => {
             {/* Purple Hero Card */}
             <div className="hero-card">
                 <img src={`https://ui-avatars.com/api/?name=${patient.nombre}&background=ffffff&color=7b5da6&size=100`} alt="Avatar" className="hero-avatar" />
-                <h1 className="hero-name">{patient.nombre}</h1>
+                <h1 className="hero-name" style={{ color: 'white' }}>{patient.nombre}</h1>
                 <div className="hero-meta">
                     {patient.cedula} {patient.genero && `• ${patient.genero}`} {patient.fechaNacimiento && `• ${calculateAge(patient.fechaNacimiento)}`}
                 </div>
@@ -131,16 +131,16 @@ const PatientDetailsPage = () => {
                 <div className="sidebar-section">
                     {/* Personal Info */}
                     <Card padding="large" style={{ borderRadius: '12px' }}>
-                        <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#5e3a8f', marginBottom: '24px', marginTop: 0 }}>Información Personal</h2>
+                        <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#5e3a8f', marginBottom: '24px', marginTop: 0 }}>{t('patientDetails.personalInfo')}</h2>
 
                         <div className="info-block">
-                            <div className="info-label">Correo Electrónico</div>
-                            <div className="info-value">{patient.email || 'No especificado'}</div>
+                            <div className="info-label">{t('patientDetails.email')}</div>
+                            <div className="info-value">{patient.email || t('patientDetails.notSpecified')}</div>
                         </div>
 
                         <div className="info-block" style={{ marginBottom: 0 }}>
-                            <div className="info-label">Dirección</div>
-                            <div className="info-value">{patient.direccion || 'No especificada'}</div>
+                            <div className="info-label">{t('patientDetails.address')}</div>
+                            <div className="info-value">{patient.direccion || t('patientDetails.notSpecifiedFem')}</div>
                         </div>
                     </Card>
 
@@ -148,27 +148,27 @@ const PatientDetailsPage = () => {
                     <Card padding="large" style={{ borderRadius: '12px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '8px', color: '#333' }}>
                             <Activity size={20} color="#5e3a8f" />
-                            <h2 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 0 -4px' }}>Información Clínica Básica</h2>
+                            <h2 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 0 -4px' }}>{t('patientDetails.clinicalInfo')}</h2>
                         </div>
 
                         <div className="info-block">
-                            <div className="info-label">Tipo de Sangre</div>
-                            <div className="info-value">{patient.tipoSangre || 'No especificado'}</div>
+                            <div className="info-label">{t('patientDetails.bloodType')}</div>
+                            <div className="info-value">{patient.tipoSangre || t('patientDetails.notSpecified')}</div>
                         </div>
 
                         <div className="info-block">
-                            <div className="info-label">Alergias Conocidas</div>
-                            <div className="info-value">{patient.alergias || 'Ninguna registrada'}</div>
+                            <div className="info-label">{t('patientDetails.allergies')}</div>
+                            <div className="info-value">{patient.alergias || t('patientDetails.noneRegistered')}</div>
                         </div>
 
                         <div className="info-block">
-                            <div className="info-label">Condiciones Médicas Previas</div>
-                            <div className="info-value">{patient.condicionesMedicas || 'Ninguna registrada'}</div>
+                            <div className="info-label">{t('patientDetails.medicalConditions')}</div>
+                            <div className="info-value">{patient.condicionesMedicas || t('patientDetails.noneRegistered')}</div>
                         </div>
 
                         <div className="info-block" style={{ marginBottom: 0 }}>
-                            <div className="info-label">Notas Adicionales</div>
-                            <div className="info-value">{patient.notasAdicionales || 'Ninguna'}</div>
+                            <div className="info-label">{t('patientDetails.additionalNotes')}</div>
+                            <div className="info-value">{patient.notasAdicionales || t('patientDetails.none')}</div>
                         </div>
                     </Card>
                 </div>
@@ -180,13 +180,13 @@ const PatientDetailsPage = () => {
                     <div className="appointments-summary">
                         <div className="appointment-card">
                             <div>
-                                <div className="appointment-card-title">PRÓXIMA CITA</div>
+                                <div className="appointment-card-title">{t('patientDetails.nextAppointment')}</div>
                                 <div className="appointment-card-date">14 Oct, 10:00</div>
                             </div>
                         </div>
                         <div className="appointment-card">
                             <div>
-                                <div className="appointment-card-title">ÚLTIMA VISITA</div>
+                                <div className="appointment-card-title">{t('patientDetails.lastVisit')}</div>
                                 <div className="appointment-card-date">{patient.ultimaVisita ? formatDate(patient.ultimaVisita) : '20 Sep 2023'}</div>
                             </div>
                             <History size={20} color="#999" />
@@ -196,9 +196,9 @@ const PatientDetailsPage = () => {
                     {/* Treatment History List */}
                     <Card padding="large" style={{ borderRadius: '12px' }}>
                         <div className="treatments-header">
-                            <h2 className="treatments-title">Historial de Tratamientos</h2>
-                            <Button style={{ backgroundColor: '#5e3a8f', display: 'flex', gap: '8px', alignItems: 'center', padding: '6px 16px', fontSize: '13px' }}>
-                                <Plus size={16} /> Añadir Tratamiento
+                            <h2 className="treatments-title">{t('patientDetails.treatmentHistory')}</h2>
+                            <Button style={{ backgroundColor: '#5e3a8f', color: 'white', display: 'flex', gap: '8px', alignItems: 'center', padding: '6px 16px', fontSize: '13px' }}>
+                                <Plus size={16} style={{ color: 'white' }} /> {t('patientDetails.addTreatment')}
                             </Button>
                         </div>
 
@@ -233,8 +233,8 @@ const PatientDetailsPage = () => {
                                         </div>
 
                                         <div className="treatment-actions">
-                                            <button className="tx-action-btn"><FileEdit size={12} /> Modificar</button>
-                                            <button className="tx-action-btn"><Trash2 size={12} /> Eliminar</button>
+                                            <button className="tx-action-btn"><FileEdit size={12} /> {t('patientDetails.modifyTreatment')}</button>
+                                            <button className="tx-action-btn"><Trash2 size={12} /> {t('patientDetails.deleteTreatment')}</button>
                                         </div>
                                     </div>
                                 </div>
