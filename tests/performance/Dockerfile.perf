@@ -4,4 +4,23 @@ FROM justb4/jmeter:5.5
 WORKDIR /tests
 
 # Copiamos los scripts de carga
-COPY . .
+COPY plans/ /tests/plans/
+
+# Script to run a specific plan or run them sequentially
+RUN echo '#!/bin/sh\n\
+if [ -z "$1" ]; then\n\
+  echo "Ejecutando todos los scripts secuencialmente..."\n\
+  for jmx in /tests/plans/*.jmx; do\n\
+    echo "Ejecutando: $jmx"\n\
+    filename=$(basename -- "$jmx")\n\
+    basename="${filename%.*}"\n\
+    jmeter -n -t "$jmx" -l /app/results/${basename}_results.csv -e -o /app/results/${basename}_html_report\n\
+  done\n\
+else\n\
+  echo "Ejecutando: $1"\n\
+  filename=$(basename -- "$1")\n\
+  basename="${filename%.*}"\n\
+  jmeter -n -t "/tests/plans/$1" -l /app/results/${basename}_results.csv -e -o /app/results/${basename}_html_report\n\
+fi' > /run_tests.sh && chmod +x /run_tests.sh
+
+ENTRYPOINT ["/run_tests.sh"]

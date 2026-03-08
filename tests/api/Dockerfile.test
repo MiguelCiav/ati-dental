@@ -7,5 +7,15 @@ WORKDIR /etc/newman
 # Copiamos los archivos de la colección y ambiente
 COPY . .
 
-# Definimos el entrypoint para ejecutar newman directamente
-ENTRYPOINT ["newman"]
+# entrypoint script to run all collections or a specific one
+RUN echo '#!/bin/sh\n\
+if [ -z "$1" ]; then\n\
+  for col in collections/*.json; do\n\
+    echo "Ejecutando colección: $col"\n\
+    newman run "$col"\n\
+  done\n\
+else\n\
+  newman run "$@"\n\
+fi' > /run_collections.sh && chmod +x /run_collections.sh
+
+ENTRYPOINT ["/run_collections.sh"]
