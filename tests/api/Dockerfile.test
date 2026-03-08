@@ -8,14 +8,20 @@ WORKDIR /etc/newman
 COPY . .
 
 # entrypoint script to run all collections or a specific one
-RUN echo '#!/bin/sh\n\
-if [ -z "$1" ]; then\n\
-  for col in collections/*.json; do\n\
-    echo "Ejecutando colección: $col"\n\
-    newman run "$col"\n\
-  done\n\
-else\n\
-  newman run "$@"\n\
-fi' > /run_collections.sh && chmod +x /run_collections.sh
+RUN echo '#!/bin/sh' > /run_collections.sh && \
+    echo 'if [ "$1" = "run" ] && [ "$2" = "collection.json" ]; then' >> /run_collections.sh && \
+    echo '  echo "Ejecutando colecciones divididas (Compatibilidad CI)..."' >> /run_collections.sh && \
+    echo '  for col in collections/*.json; do' >> /run_collections.sh && \
+    echo '    newman run "$col"' >> /run_collections.sh && \
+    echo '  done' >> /run_collections.sh && \
+    echo 'elif [ -z "$1" ]; then' >> /run_collections.sh && \
+    echo '  for col in collections/*.json; do' >> /run_collections.sh && \
+    echo '    echo "Ejecutando colección: $col"' >> /run_collections.sh && \
+    echo '    newman run "$col"' >> /run_collections.sh && \
+    echo '  done' >> /run_collections.sh && \
+    echo 'else' >> /run_collections.sh && \
+    echo '  newman run "$@"' >> /run_collections.sh && \
+    echo 'fi' >> /run_collections.sh && \
+    chmod +x /run_collections.sh
 
 ENTRYPOINT ["/run_collections.sh"]
