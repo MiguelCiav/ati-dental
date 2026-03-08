@@ -9,6 +9,22 @@ jest.mock('../services/patientsService', () => ({
     updatePatient: jest.fn()
 }));
 
+jest.mock('react-i18next', () => ({
+    useTranslation: () => {
+        return {
+            t: (str) => {
+                // Return a fallback for specific keys, else return the key itself so we can target it.
+                if (str === 'common.loading') return 'Cargando...';
+                if (str === 'common.save') return 'Guardar Cambios';
+                return str; 
+            },
+            i18n: {
+                changeLanguage: () => new Promise(() => {}),
+            },
+        };
+    },
+}));
+
 const renderWithRouter = (ui, route = '/patients/123/edit') => {
     return render(
         <MemoryRouter initialEntries={[route]}>
@@ -27,7 +43,7 @@ describe('EditPatientPage Component', () => {
     it('muestra estado de carga inicialmente', () => {
         patientsService.getPatientById.mockImplementation(() => new Promise(() => { }));
         renderWithRouter(<EditPatientPage />);
-        expect(screen.getByText('Cargando información del paciente...')).toBeInTheDOM;
+        expect(screen.getByText('Cargando...')).toBeInTheDOM;
     });
 
     it('renderiza la información del paciente correctamente en los inputs', async () => {
