@@ -11,13 +11,15 @@ COPY . .
 RUN echo '#!/bin/sh' > /run_collections.sh && \
     echo 'if [ "$1" = "run" ] && [ "$2" = "collection.json" ]; then' >> /run_collections.sh && \
     echo '  echo "Ejecutando colecciones divididas (Compatibilidad CI)..."' >> /run_collections.sh && \
+    echo '  echo "{}" > /tmp/env.json' >> /run_collections.sh && \
     echo '  for col in collections/*.json; do' >> /run_collections.sh && \
-    echo '    newman run "$col"' >> /run_collections.sh && \
+    echo '    newman run "$col" -e /tmp/env.json --export-environment /tmp/env.json' >> /run_collections.sh && \
     echo '  done' >> /run_collections.sh && \
     echo 'elif [ -z "$1" ]; then' >> /run_collections.sh && \
+    echo '  echo "{}" > /tmp/env.json' >> /run_collections.sh && \
     echo '  for col in collections/*.json; do' >> /run_collections.sh && \
     echo '    echo "Ejecutando colección: $col"' >> /run_collections.sh && \
-    echo '    newman run "$col"' >> /run_collections.sh && \
+    echo '    newman run "$col" -e /tmp/env.json --export-environment /tmp/env.json' >> /run_collections.sh && \
     echo '  done' >> /run_collections.sh && \
     echo 'else' >> /run_collections.sh && \
     echo '  newman run "$@"' >> /run_collections.sh && \
