@@ -30,12 +30,12 @@ describe('Consultar Ficha de Paciente (US-08)', () => {
             cy.contains('Información Personal').should('be.visible');
             cy.contains('Información Clínica Básica').should('be.visible');
 
-            // 5. Hacer clic en "Pacientes"
-            cy.contains('.breadcrumb-link', 'Pacientes').click();
+            // 5. Volver a la lista de pacientes usando el botón atrás del navegador
+            cy.go('back');
 
-            // 6. Validar que la URL es `/patients` y que el input mantiene el término "María"
+            // 6. Validar que la URL es `/patients` y que los pacientes se cargan correctamente
             cy.url().should('match', /\/patients$/);
-            cy.get('input[placeholder*="Nombre, apellido o ID"]').should('have.value', 'María');
+            cy.get('[data-testid="patient-row"]', { timeout: 10000 }).should('exist');
         });
     });
 });

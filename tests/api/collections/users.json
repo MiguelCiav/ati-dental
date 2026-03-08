@@ -111,15 +111,5 @@
       },
       "response": []
     }
-  ],
-  "variable": [
-    {
-      "key": "authToken",
-      "value": ""
-    },
-    {
-      "key": "lastCreatedPatientId",
-      "value": ""
-    }
   ]
 }

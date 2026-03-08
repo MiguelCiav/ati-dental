@@ -30,7 +30,7 @@ describe('Editar Paciente (US-09)', () => {
         cy.get('input[name="direccion"]').clear().type('Nueva Avenida 123');
 
         // 6. Guardar cambios
-        cy.contains('button', 'Guardar Cambios').click();
+        cy.contains('button', 'Guardar').click();
 
         // 7. Validar redirección a la ficha del paciente
         cy.url().should('match', /\/patients\/[a-zA-Z0-9]+$/);
