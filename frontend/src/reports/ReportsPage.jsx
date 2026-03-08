@@ -118,19 +118,21 @@ const ReportsPage = () => {
 
   return (
     <div className="page-container">
-      <div className="page-header">
-        <div>
+      <div className="page-header page-header-content">
+        <div className="page-header-text">
           <h1>{t('reports.title')}</h1>
           <p>{t('reports.subtitle')}</p>
         </div>
-        <Button
-          onClick={handleExportPDF}
-          disabled={exporting}
-          variant="primary"
-        >
-          <FileDown size={20} />
-          {exporting ? t('reports.exporting') : t('reports.exportPDF')}
-        </Button>
+        <div className="page-header-actions">
+          <Button
+            onClick={handleExportPDF}
+            disabled={exporting}
+            variant="primary"
+          >
+            <FileDown size={20} />
+            {exporting ? t('reports.exporting') : t('reports.exportPDF')}
+          </Button>
+        </div>
       </div>
 
       <div className="stats-summary">

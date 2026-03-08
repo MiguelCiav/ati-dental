@@ -68,13 +68,15 @@ const RegisterPatientPage = () => {
 
     return (
         <div className="page-container">
-            <div className="page-header" style={{ marginBottom: '24px' }}>
-                <h1 style={{ color: '#5e3a8f', fontSize: '28px', marginBottom: '8px' }}>
-                    {t('registerPatient.title')}
-                </h1>
-                <p style={{ color: '#666', fontSize: '15px' }}>
-                    {t('registerPatient.subtitle')}
-                </p>
+            <div className="page-header page-header-content" style={{ marginBottom: '24px' }}>
+                <div className="page-header-text">
+                    <h1 style={{ fontSize: '28px', marginBottom: '8px' }}>
+                        {t('registerPatient.title')}
+                    </h1>
+                    <p style={{ color: '#666', fontSize: '15px' }}>
+                        {t('registerPatient.subtitle')}
+                    </p>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit}>

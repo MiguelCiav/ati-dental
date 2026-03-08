@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Card, InputField, SelectField, Button } from '../components';
 import { Mail, Phone, Calendar, User, FileText, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import patientsService from '../services/patientsService';
 
 const EditPatientPage = () => {
+    const { t } = useTranslation('common');
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -26,13 +28,13 @@ const EditPatientPage = () => {
     });
 
     const generoOptions = [
-        { value: '', label: 'Seleccionar...', disabled: true },
-        { value: 'Masculino', label: 'Masculino' },
-        { value: 'Femenino', label: 'Femenino' }
+        { value: '', label: t('registerPatient.selectOption', 'Seleccionar...'), disabled: true },
+        { value: 'Masculino', label: t('registerPatient.male', 'Masculino') },
+        { value: 'Femenino', label: t('registerPatient.female', 'Femenino') }
     ];
 
     const tipoSangreOptions = [
-        { value: '', label: 'Seleccionar...', disabled: true },
+        { value: '', label: t('registerPatient.selectOption', 'Seleccionar...'), disabled: true },
         { value: 'A+', label: 'A+' },
         { value: 'A-', label: 'A-' },
         { value: 'B+', label: 'B+' },
@@ -70,7 +72,7 @@ const EditPatientPage = () => {
                     notasAdicionales: data.notasAdicionales || ''
                 });
             } catch (err) {
-                setError(err.message || 'Error al cargar la información del paciente.');
+                setError(err.message || t('registerPatient.errorDefault', 'Error al cargar la información del paciente.'));
             } finally {
                 setFetching(false);
             }
@@ -98,7 +100,7 @@ const EditPatientPage = () => {
             await patientsService.updatePatient(id, formData);
             navigate(`/patients/${id}`);
         } catch (err) {
-            setError(err.message || 'Error al actualizar el paciente');
+            setError(err.message || t('registerPatient.errorDefault', 'Error al actualizar el paciente'));
         } finally {
             setLoading(false);
         }
@@ -107,38 +109,29 @@ const EditPatientPage = () => {
     if (fetching) {
         return (
             <div className="page-container" style={{ display: 'flex', justifyContent: 'center', padding: '100px 0' }}>
-                <p style={{ color: '#666' }}>Cargando información del paciente...</p>
+                <p style={{ color: '#666' }}>{t('common.loading', 'Cargando...')}</p>
             </div>
         );
     }
 
     return (
         <div className="page-container">
-            {/* Breadcrumb Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div className="breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#666', marginBottom: '24px' }}>
-                    <Link to="/patients" className="breadcrumb-link" style={{ color: '#666', textDecoration: 'none' }}>Pacientes</Link>
-                    <ChevronRight size={14} className="breadcrumb-separator" style={{ color: '#999' }} />
-                    <Link to={`/patients/${id}`} className="breadcrumb-link" style={{ color: '#666', textDecoration: 'none' }}>Ficha del Paciente</Link>
-                    <ChevronRight size={14} className="breadcrumb-separator" style={{ color: '#999' }} />
-                    <span className="breadcrumb-current" style={{ color: '#5e3a8f', fontWeight: '500' }}>Editar</span>
+            <div className="page-header page-header-content" style={{ marginBottom: '24px' }}>
+                <div className="page-header-text">
+                    <h1 style={{ fontSize: '28px', marginBottom: '8px' }}>
+                        {t('patients.edit', 'Editar')} {t('patients.title', 'Paciente')}
+                    </h1>
+                    <p style={{ color: '#666', fontSize: '15px' }}>
+                        {t('editPatient.subtitle', 'Modifique los datos del paciente y guarde los cambios.')}
+                    </p>
                 </div>
-            </div>
-
-            <div className="page-header" style={{ marginBottom: '24px' }}>
-                <h1 style={{ color: '#5e3a8f', fontSize: '28px', marginBottom: '8px' }}>
-                    Editar Paciente
-                </h1>
-                <p style={{ color: '#666', fontSize: '15px' }}>
-                    Modifique los datos del paciente y guarde los cambios.
-                </p>
             </div>
 
             <form onSubmit={handleSubmit}>
                 <Card padding="large" style={{ marginBottom: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '8px', color: '#333', borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
                         <User size={20} color="#5e3a8f" />
-                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Datos Personales</h2>
+                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{t('registerPatient.personalData', 'Datos Personales')}</h2>
                     </div>
 
                     {error && (
@@ -149,15 +142,15 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Nombre Completo"
+                            label={t('registerPatient.fullName', 'Nombre Completo')}
                             name="nombre"
                             value={formData.nombre}
                             onChange={handleChange}
-                            placeholder="Ej. Juan Pérez"
+                            placeholder={t('registerPatient.fullNamePlaceholder', 'Ej. Juan Pérez')}
                             required
                         />
                         <InputField
-                            label="Cédula de Identidad"
+                            label={t('registerPatient.idCard', 'Cédula de Identidad')}
                             name="cedula"
                             value={formData.cedula}
                             onChange={handleChange}
@@ -166,7 +159,7 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Fecha de Nacimiento"
+                            label={t('registerPatient.birthDate', 'Fecha de Nacimiento')}
                             type="date"
                             name="fechaNacimiento"
                             value={formData.fechaNacimiento}
@@ -174,14 +167,14 @@ const EditPatientPage = () => {
                             icon={Calendar}
                         />
                         <SelectField
-                            label="Género"
+                            label={t('registerPatient.gender', 'Género')}
                             name="genero"
                             value={formData.genero}
                             onChange={handleChange}
                             options={generoOptions}
                         />
                         <InputField
-                            label="Teléfono"
+                            label={t('registerPatient.phone', 'Teléfono')}
                             name="telefono"
                             value={formData.telefono}
                             onChange={handleChange}
@@ -192,12 +185,12 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Correo Electrónico"
+                            label={t('registerPatient.email', 'Correo Electrónico')}
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="correo@ejemplo.com"
+                            placeholder={t('registerPatient.emailPlaceholder', 'correo@ejemplo.com')}
                             icon={Mail}
                             required
                         />
@@ -205,11 +198,11 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '10px' }}>
                         <InputField
-                            label="Dirección de Residencia"
+                            label={t('registerPatient.address', 'Dirección de Residencia')}
                             name="direccion"
                             value={formData.direccion}
                             onChange={handleChange}
-                            placeholder="Calle, Número, Ciudad"
+                            placeholder={t('registerPatient.addressPlaceholder', 'Calle, Número, Ciudad')}
                         />
                     </div>
                 </Card>
@@ -218,12 +211,12 @@ const EditPatientPage = () => {
                 <Card padding="large" style={{ marginBottom: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '8px', color: '#333', borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
                         <FileText size={20} color="#5e3a8f" />
-                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Información Clínica Básica</h2>
+                        <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{t('registerPatient.clinicalInfo', 'Información Clínica Básica')}</h2>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 300px) 1fr', gap: '20px', marginBottom: '20px' }}>
                         <SelectField
-                            label="Tipo de Sangre"
+                            label={t('registerPatient.bloodType', 'Tipo de Sangre')}
                             name="tipoSangre"
                             value={formData.tipoSangre}
                             onChange={handleChange}
@@ -233,11 +226,11 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Alergias Conocidas"
+                            label={t('registerPatient.allergies', 'Alergias Conocidas')}
                             name="alergias"
                             value={formData.alergias}
                             onChange={handleChange}
-                            placeholder="Listar medicamentos, alimentos o materiales (ej. Penicilina, Látex)..."
+                            placeholder={t('registerPatient.allergiesPlaceholder', 'Listar medicamentos...')}
                             multiline
                             rows={3}
                         />
@@ -245,11 +238,11 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
                         <InputField
-                            label="Condiciones Médicas Previas"
+                            label={t('registerPatient.medicalConditions', 'Condiciones Médicas Previas')}
                             name="condicionesMedicas"
                             value={formData.condicionesMedicas}
                             onChange={handleChange}
-                            placeholder="Diabetes, Hipertensión, Cirugías recientes..."
+                            placeholder={t('registerPatient.medicalConditionsPlaceholder', 'Diabetes, Hipertensión...')}
                             multiline
                             rows={3}
                         />
@@ -257,7 +250,7 @@ const EditPatientPage = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '10px' }}>
                         <InputField
-                            label="Notas Adicionales"
+                            label={t('registerPatient.additionalNotes', 'Notas Adicionales')}
                             name="notasAdicionales"
                             value={formData.notasAdicionales}
                             onChange={handleChange}
@@ -269,10 +262,10 @@ const EditPatientPage = () => {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '30px' }}>
                     <Button type="button" variant="outline" onClick={() => navigate(`/patients/${id}`)} disabled={loading}>
-                        Cancelar
+                        {t('common.cancel', 'Cancelar')}
                     </Button>
                     <Button type="submit" variant="primary" loading={loading} disabled={loading}>
-                        {loading ? 'Guardando...' : 'Guardar Cambios'}
+                        {loading ? t('common.loading', 'Cargando...') : t('common.save', 'Guardar Cambios')}
                     </Button>
                 </div>
             </form>

@@ -92,13 +92,8 @@ const PatientDetailsPage = () => {
     return (
         <div className="patient-details-container page-container">
 
-            {/* Breadcrumb & Actions Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div className="breadcrumb">
-                    <Link to="/patients" state={location.state} className="breadcrumb-link">{t('patientDetails.breadcrumbPatients')}</Link>
-                    <ChevronRight size={14} className="breadcrumb-separator" />
-                    <span className="breadcrumb-current">{t('patientDetails.breadcrumbDetails')}</span>
-                </div>
+            {/* Actions Header */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '16px' }}>
 
                 <div className="actions-header">
                     <Button variant="outline" onClick={() => navigate(`/patients/${patient._id}/edit`)} style={{ display: 'flex', gap: '8px', alignItems: 'center', color: '#666', borderColor: '#e0e0e0', backgroundColor: 'white' }}>

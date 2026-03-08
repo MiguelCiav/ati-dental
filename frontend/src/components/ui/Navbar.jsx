@@ -11,9 +11,10 @@ const Navbar = ({ onToggleSidebar }) => {
     '/': t('menu.dashboard', 'Inicio'),
     '/patients': t('menu.patientsList', 'Listado de Pacientes'),
     '/patients/register': t('menu.registerPatient', 'Registrar Paciente'),
-    '/profile': t('menu.profileSettings', 'Perfil e Idioma'),
-    '/contact': 'Contacto',
-    '/settings': 'Ajustes',
+    '/reports': t('menu.reports', 'Reportes'),
+    '/profile': t('menu.profileSettings', 'Ajustes de Perfil'),
+    '/contact': t('menu.contact', 'Contacto'),
+    '/settings': t('menu.settings', 'Ajustes'),
   };
 
   const generateBreadcrumbs = () => {
@@ -23,7 +24,15 @@ const Navbar = ({ onToggleSidebar }) => {
     let currentPath = '';
     pathSegments.forEach((segment) => {
       currentPath += `/${segment}`;
-      const label = routeLabels[currentPath] || segment;
+      let label = routeLabels[currentPath] || segment;
+      
+      // If segment is a typical Mongo ID in the patients route
+      if (currentPath.match(/^\/patients\/[a-fA-F0-9]{24}$/)) {
+        label = t('patientDetails.breadcrumbDetails', 'Ficha del Paciente');
+      } else if (currentPath.match(/^\/patients\/[a-fA-F0-9]{24}\/edit$/)) {
+        label = t('patients.edit', 'Editar');
+      }
+
       breadcrumbs.push({ label, path: currentPath });
     });
 

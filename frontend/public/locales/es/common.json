@@ -6,6 +6,7 @@
         "registerPatientHint": "Formulario de registro de pacientes.",
         "reports": "Reportes",
         "profileSettings": "Ajustes de Perfil",
+        "profileSettingsHint": "Gestione su información personal y preferencias de la cuenta.",
         "contact": "Contacto",
         "contactHint": "Información de contacto.",
         "logout": "Cerrar Sesión"
@@ -138,5 +139,22 @@
         "langEn": "English (Inglés)",
         "langEnHint": "Standard interface language.",
         "success": "Perfil guardado exitosamente."
+    },
+    "contactPage": {
+        "title": "Información y Contacto",
+        "subtitle": "Gestione la comunicación con el equipo y revise la actividad reciente.",
+        "siteManagers": "Responsables del Sitio",
+        "roles": {
+            "medicalDirector": "Director Médico",
+            "operationsManager": "Gerente de Operaciones",
+            "techSupport": "Soporte Técnico"
+        },
+        "descriptions": {
+            "medicalDirector": "Responsable de la supervisión clínica y protocolos de atención al paciente.",
+            "operationsManager": "Encargada de la logística diaria, recursos humanos y gestión de citas.",
+            "techSupport": "Mantenimiento de la plataforma, seguridad de datos y soporte TI."
+        },
+        "socialMedia": "Nuestras Redes Sociales",
+        "socialMediaDesc": "Síguenos para mantenerte al día con nuestras novedades."
     }
 }

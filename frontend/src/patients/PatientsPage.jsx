@@ -61,9 +61,11 @@ const PatientsPage = () => {
 
   return (
     <div className="page-container">
-      <div className="page-header">
-        <h1>{t('patients.listTitle')}</h1>
-        <p>{t('patients.listSubtitle')}</p>
+      <div className="page-header page-header-content">
+        <div className="page-header-text">
+          <h1>{t('patients.listTitle')}</h1>
+          <p>{t('patients.listSubtitle')}</p>
+        </div>
       </div>
 
       <Card padding="medium" style={{ marginBottom: '24px' }}>

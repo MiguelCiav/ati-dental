@@ -121,7 +121,13 @@ const ProfilePage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="page-container" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="page-header page-header-content">
+                <div className="page-header-text">
+                    <h1>{t('menu.profileSettings', 'Ajustes de Perfil')}</h1>
+                    <p>{t('menu.profileSettingsHint', 'Gestione su información personal y preferencias de la cuenta.')}</p>
+                </div>
+            </div>
             <Card
                 title={t('profile.titleInfo', 'Información Personal')}
                 icon={User}
