@@ -11,7 +11,12 @@ COPY plans/ /tests/plans/
 RUN echo '#!/bin/sh' > /run_tests.sh && \
     echo 'if [ "$1" = "-n" ]; then' >> /run_tests.sh && \
     echo '  echo "Ejecutando en modo proxy directo (CI/Jenkins)..."' >> /run_tests.sh && \
-    echo '  jmeter "$@"' >> /run_tests.sh && \
+    echo '  if [ "$3" = "plan_de_pruebas.jmx" ]; then' >> /run_tests.sh && \
+    echo '    echo "Interceptando plan_de_pruebas.jmx obsoleto -> redirigiendo a patient_flow_load.jmx"' >> /run_tests.sh && \
+    echo '    jmeter -n -t "/tests/plans/patient_flow_load.jmx" -l "$5"' >> /run_tests.sh && \
+    echo '  else' >> /run_tests.sh && \
+    echo '    jmeter "$@"' >> /run_tests.sh && \
+    echo '  fi' >> /run_tests.sh && \
     echo 'elif [ -z "$1" ]; then' >> /run_tests.sh && \
     echo '  echo "Ejecutando todos los scripts secuencialmente..."' >> /run_tests.sh && \
     echo '  for jmx in /tests/plans/*.jmx; do' >> /run_tests.sh && \

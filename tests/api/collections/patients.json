@@ -246,7 +246,7 @@
               "    pm.expect(jsonData.cedula).to.include('V-POSTMAN');",
               "    // Guardar ID para próxima petición",
               "    if (jsonData._id) {",
-              "        pm.collectionVariables.set('lastCreatedPatientId', jsonData._id);",
+              "        pm.globals.set('lastCreatedPatientId', jsonData._id);",
               "    }",
               "});"
             ],
@@ -298,7 +298,7 @@
               "",
               "pm.test('Respuesta es el paciente correcto', function () {",
               "    const jsonData = pm.response.json();",
-              "    pm.expect(jsonData._id).to.eql(pm.collectionVariables.get('lastCreatedPatientId'));",
+              "    pm.expect(jsonData._id).to.eql(pm.globals.get('lastCreatedPatientId'));",
               "    pm.expect(jsonData.nombre).to.eql('Paciente Postman');",
               "});"
             ],
