@@ -122,11 +122,12 @@ pipeline {
                         sh "docker exec ati_api node seedUser.js || true"
                         sh "docker exec ati_api node seedPatients.js || true"
 
+                        // Sin argumentos → el entrypoint itera por todas las colecciones en /collections/*.json
+                        // compartiendo el token de Auth via globals entre colecciones
                         sh """
                         docker run --rm \\
                             --network ${APP_NETWORK} \\
-                            ${API_TEST_IMAGE} \\
-                            run collection.json
+                            ${API_TEST_IMAGE}
                         """
                         echo '>>> ✅ API Tests completados.'
                     }
@@ -147,6 +148,7 @@ pipeline {
                         sh """
                         docker run --rm \\
                             --network ${APP_NETWORK} \\
+                            --shm-size=1g \\
                             ${E2E_IMAGE}
                         """
                         echo '>>> ✅ E2E Tests completados.'
@@ -167,18 +169,13 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        // NOTA sobre Docker-out-of-Docker:
-                        // Los bind mounts con $(pwd) son resueltos por el daemon del HOST,
-                        // no del contenedor Jenkins, lo que hace que el path de limpieza
-                        // y el path de escritura de JMeter difieran. Para evitar el error
-                        // "folder is not empty", se omite la generación del reporte HTML.
-                        // El archivo JTL es suficiente en un entorno CI.
                         sh "docker build -t ${PERF_IMAGE} -f tests/performance/Dockerfile.perf tests/performance"
+                        // Sin argumentos → el entrypoint itera por todos los .jmx dentro de /tests/plans/
+                        // (login_load.jmx, patient_flow_load.jmx, update_config_load.jmx) secuencialmente
                         sh """
                         docker run --rm \\
                             --network ${APP_NETWORK} \\
-                            ${PERF_IMAGE} \\
-                            -n -t plan_de_pruebas.jmx -l resultados.jtl
+                            ${PERF_IMAGE}
                         """
                         echo '>>> ✅ Pruebas de rendimiento completadas.'
                     }

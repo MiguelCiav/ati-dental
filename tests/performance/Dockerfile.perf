@@ -1,35 +1,30 @@
 # Usamos una imagen que ya tenga Java y JMeter instalado
 FROM justb4/jmeter:5.5
 
-
 WORKDIR /tests
 
 # Copiamos los scripts de carga
 COPY plans/ /tests/plans/
 
-# Script to run a specific plan or run them sequentially
+# Crear la carpeta de resultados dentro del contenedor (necesaria para JMeter)
+RUN mkdir -p /app/results
+
+# Entrypoint: sin argumentos → itera todos los .jmx en plans/ secuencialmente
+#             con un nombre de archivo → ejecuta solo ese plan (ej: login_load.jmx)
 RUN echo '#!/bin/sh' > /run_tests.sh && \
-    echo 'if [ "$1" = "-n" ]; then' >> /run_tests.sh && \
-    echo '  echo "Ejecutando en modo proxy directo (CI/Jenkins)..."' >> /run_tests.sh && \
-    echo '  if [ "$3" = "plan_de_pruebas.jmx" ]; then' >> /run_tests.sh && \
-    echo '    echo "Interceptando plan_de_pruebas.jmx obsoleto -> redirigiendo a patient_flow_load.jmx"' >> /run_tests.sh && \
-    echo '    jmeter -n -t "/tests/plans/patient_flow_load.jmx" -l "$5"' >> /run_tests.sh && \
-    echo '  else' >> /run_tests.sh && \
-    echo '    jmeter "$@"' >> /run_tests.sh && \
-    echo '  fi' >> /run_tests.sh && \
-    echo 'elif [ -z "$1" ]; then' >> /run_tests.sh && \
-    echo '  echo "Ejecutando todos los scripts secuencialmente..."' >> /run_tests.sh && \
+    echo 'if [ -z "$1" ]; then' >> /run_tests.sh && \
+    echo '  echo "Ejecutando todos los planes secuencialmente..."' >> /run_tests.sh && \
     echo '  for jmx in /tests/plans/*.jmx; do' >> /run_tests.sh && \
     echo '    echo "Ejecutando: $jmx"' >> /run_tests.sh && \
     echo '    filename=$(basename -- "$jmx")' >> /run_tests.sh && \
     echo '    basename="${filename%.*}"' >> /run_tests.sh && \
-    echo '    jmeter -n -t "$jmx" -l /app/results/${basename}_results.csv -e -o /app/results/${basename}_html_report' >> /run_tests.sh && \
+    echo '    jmeter -n -t "$jmx" -l /app/results/${basename}_results.csv' >> /run_tests.sh && \
     echo '  done' >> /run_tests.sh && \
     echo 'else' >> /run_tests.sh && \
-    echo '  echo "Ejecutando: $1"' >> /run_tests.sh && \
+    echo '  echo "Ejecutando plan: $1"' >> /run_tests.sh && \
     echo '  filename=$(basename -- "$1")' >> /run_tests.sh && \
     echo '  basename="${filename%.*}"' >> /run_tests.sh && \
-    echo '  jmeter -n -t "/tests/plans/$1" -l /app/results/${basename}_results.csv -e -o /app/results/${basename}_html_report' >> /run_tests.sh && \
+    echo '  jmeter -n -t "/tests/plans/$1" -l /app/results/${basename}_results.csv' >> /run_tests.sh && \
     echo 'fi' >> /run_tests.sh && \
     chmod +x /run_tests.sh
 
