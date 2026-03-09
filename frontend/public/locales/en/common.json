@@ -6,6 +6,7 @@
         "registerPatientHint": "Patient registration form.",
         "reports": "Reports",
         "profileSettings": "Profile Settings",
+        "profileSettingsHint": "Manage your personal information and account preferences.",
         "contact": "Contact",
         "contactHint": "Contact Information.",
         "logout": "Logout"
@@ -138,5 +139,22 @@
         "langEn": "English",
         "langEnHint": "Standard interface language.",
         "success": "Profile saved successfully."
+    },
+    "contactPage": {
+        "title": "Information & Contact",
+        "subtitle": "Manage communication with the team and review recent activity.",
+        "siteManagers": "Site Managers",
+        "roles": {
+            "medicalDirector": "Medical Director",
+            "operationsManager": "Operations Manager",
+            "techSupport": "Technical Support"
+        },
+        "descriptions": {
+            "medicalDirector": "Responsible for clinical supervision and patient care protocols.",
+            "operationsManager": "In charge of daily logistics, human resources, and appointment management.",
+            "techSupport": "Platform maintenance, data security, and IT support."
+        },
+        "socialMedia": "Our Social Media",
+        "socialMediaDesc": "Follow us to stay up to date with our latest news."
     }
 }
