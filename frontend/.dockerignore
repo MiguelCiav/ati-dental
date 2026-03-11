@@ -1,0 +1,32 @@
+# ============================================================
+# .dockerignore — Frontend
+#
+# Excluye archivos innecesarios del contexto de build de Docker.
+# Reduces el tiempo de build y el tamaño de las imágenes.
+# ============================================================
+
+# Dependencias instaladas localmente (se reinstalan dentro del contenedor)
+node_modules/
+
+# Artefactos de build anteriores
+dist/
+
+# Control de versiones
+.git/
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cobertura de pruebas
+coverage/
+
+# Variables de entorno locales (nunca deben entrar a la imagen)
+.env
+.env.*
+!.env.example
+
+# Archivos del editor
+.vscode/
+.idea/

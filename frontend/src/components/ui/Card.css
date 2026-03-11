@@ -1,0 +1,91 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: #f9fafb;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5e3a8f;
+  flex-shrink: 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.card-header-action {
+  display: flex;
+  gap: 8px;
+}
+
+.card-body {
+  color: #666;
+  line-height: 1.6;
+}
+
+.card-padding-small .card-body {
+  padding: 16px;
+}
+
+.card-padding-medium .card-body {
+  padding: 24px;
+}
+
+.card-padding-large .card-body {
+  padding: 32px;
+}
+
+.card-no-padding .card-body {
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .card-header {
+    padding: 16px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+
+  .card-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .card-padding-small .card-body {
+    padding: 12px;
+  }
+
+  .card-padding-medium .card-body {
+    padding: 16px;
+  }
+
+  .card-padding-large .card-body {
+    padding: 20px;
+  }
+}

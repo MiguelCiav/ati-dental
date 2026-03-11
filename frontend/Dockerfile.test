@@ -1,0 +1,19 @@
+# ============================================================
+# Dockerfile.test — Ejecución de pruebas unitarias (Jest)
+#
+# Imagen autosuficiente: instala todas las dependencias de
+# desarrollo (incluyendo Jest) y ejecuta las pruebas.
+# No depende de ninguna imagen local pre-construida.
+# ============================================================
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instala todas las dependencias (dev incluidas, necesarias para Jest)
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# --watchAll=false garantiza que Jest termina tras correr todas las pruebas
+CMD ["npm", "test", "--", "--watchAll=false"]

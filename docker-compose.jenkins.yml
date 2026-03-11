@@ -1,0 +1,36 @@
+# =============================================================================
+# docker-compose.jenkins.yml
+# Infraestructura de Automatización (CI/CD)
+#
+# USO:
+#   docker compose -f docker-compose.jenkins.yml up -d
+#
+# Este archivo es EXCLUSIVO para el servidor Jenkins.
+# La aplicación (frontend, api, mongo) vive en docker-compose.yml
+# y Jenkins la gestiona internamente durante el pipeline.
+# =============================================================================
+
+# Nombre de proyecto explícito — evita colisión con docker-compose.yml (ati-dental)
+name: ati-dental-ci
+
+services:
+  jenkins:
+    build: ./jenkins
+    container_name: jenkins_server
+    privileged: true
+    user: root
+    ports:
+      - "8087:8080" # Interfaz web de Jenkins
+      - "50000:50000" # Comunicación con agentes Jenkins
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      # Docker-out-of-Docker: permite a Jenkins ejecutar comandos Docker
+      # sobre el daemon del host (tu PC).
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+# jenkins_home ya es un bind mount (./jenkins_home) así que no necesita
+# un volumen nombrado en esta sección.

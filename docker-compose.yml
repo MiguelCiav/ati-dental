@@ -1,39 +1,88 @@
-version: '3.8' 
+# =============================================================================
+# docker-compose.yml — Aplicación ATI-Dental
+#
+# USO PARA DESARROLLO LOCAL:
+#   docker compose up -d
+#
+# USO DESDE JENKINS (pipeline):
+#   docker compose -p ati-dental up -d --build
+#   docker compose -p ati-dental down
+#
+# Jenkins gestiona el ciclo de vida de estos contenedores durante el pipeline.
+# El nombre de proyecto (-p ati-dental) garantiza que la red siempre se llame
+# "ati-dental_app-network" sin importar el nombre de la carpeta en el host.
+# =============================================================================
 
 services:
-  
-  frontend: 
+  # ---------------------------------------------------------------------------
+  # FRONTEND — Servidor NGINX con la app compilada
+  # Puerto 8082 del host → 80 del contenedor (evita conflicto con API)
+  # ---------------------------------------------------------------------------
+  frontend:
     build:
-      context: ./frontend 
-      dockerfile: Dockerfile 
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: ati_frontend
     ports:
-      - "80:80" 
+      - "8082:80"
     depends_on:
-      - api 
+      - api
+    networks:
+      - app-network
+    restart: unless-stopped
 
-  api: 
+  # ---------------------------------------------------------------------------
+  # API — Backend Node.js
+  # Puerto 3001 del host → 3000 del contenedor
+  # (El 3000 del host queda libre para otros servicios)
+  # ---------------------------------------------------------------------------
+  api:
     build:
-      context: ./backend/server 
-      dockerfile: Dockerfile 
+      context: ./backend/server
+      dockerfile: Dockerfile
+    container_name: ati_api
     ports:
-      - "3000:3000" 
+      - "3001:3000"
     environment:
-      
-      - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin 
+      - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin
+      - NODE_ENV=development
+      - JWT_SECRET=${JWT_SECRET:-este_es_un_secreto_super_seguro_para_desarrollo_123!}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
     depends_on:
-      - mongo 
+      mongo:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
 
-  mongo: 
-    image: mongo:6.0 
-    container_name: mongodb_server 
-    restart: always 
+  # ---------------------------------------------------------------------------
+  # BASE DE DATOS — MongoDB 6
+  # ---------------------------------------------------------------------------
+  mongo:
+    image: mongo:6.0
+    container_name: ati_mongo
     ports:
-      - "27017:27017" 
+      - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin 
-      - MONGO_INITDB_ROOT_PASSWORD=password123 
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
     volumes:
-      - mongo-data:/data/db 
+      - mongo-data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
 volumes:
-  mongo-data: 
+  mongo-data:
+    name: ati-dental_mongo-data
+
+networks:
+  app-network:
+    name: ati-dental_app-network
+    driver: bridge

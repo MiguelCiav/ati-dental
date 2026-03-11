@@ -1,0 +1,7 @@
+# Usamos una imagen que ya tenga Java y JMeter instalado
+FROM justb4/jmeter:5.5
+
+WORKDIR /tests
+
+# Copiamos los scripts de carga
+COPY . .

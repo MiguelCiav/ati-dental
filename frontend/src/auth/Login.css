@@ -1,0 +1,225 @@
+.login-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* Changed from 100vw to prevent horizontal scroll */
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    /* Extra safety */
+}
+
+.login-left-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    /* Match the right panel */
+    width: 50%;
+    min-height: 100vh;
+    padding: 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    z-index: 1;
+}
+
+.login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(90, 45, 139, 0.8);
+    /* #5B2D8B */
+    z-index: 2;
+}
+
+.login-left-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 400px;
+}
+
+.login-logo-circle {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.login-logo-image {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.login-left-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.login-left-description {
+    font-size: 16px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.login-right-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    /* Allow to take remaining space gracefully */
+    width: 50%;
+    background-color: #ffffff;
+    padding: 40px;
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #5B2D8B;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.login-brand-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.login-title {
+    color: #1a1a1a;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.login-subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Custom styling for specific input elements to match design */
+.login-forgot-password-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.login-forgot-password-link {
+    color: #5B2D8B;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+.login-custom-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0;
+    /* Reset since we use the flex container */
+}
+
+.login-submit-container {
+    margin-top: 24px;
+}
+
+/* Override standard primary button to be purple */
+.login-submit-btn {
+    background-color: #5B2D8B !important;
+    border-color: #5B2D8B !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+    border-radius: 6px !important;
+}
+
+.login-submit-btn:hover {
+    background-color: #4a2472 !important;
+}
+
+.login-register-prompt {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #666;
+}
+
+.login-register-link {
+    color: #5B2D8B;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-register-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .login-left-panel {
+        display: none;
+    }
+
+    .login-right-panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-social-buttons {
+        grid-template-columns: 1fr;
+    }
+}

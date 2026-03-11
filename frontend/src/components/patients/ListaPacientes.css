@@ -1,0 +1,62 @@
+.lista-pacientes-container {
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.lista-pacientes-header {
+  display: grid;
+  grid-template-columns: 100px 2fr 1.5fr 1.5fr 120px;
+  gap: 16px;
+  padding: 16px 24px;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-cell {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-acciones {
+  text-align: right;
+}
+
+.lista-pacientes-body {
+  background-color: white;
+}
+
+.lista-pacientes-empty {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: transparent;
+}
+
+.lista-pacientes-empty p {
+  color: #9ca3af;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .lista-pacientes-header {
+    grid-template-columns: 80px 2fr 1fr 1fr 100px;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lista-pacientes-header {
+    display: none;
+  }
+
+  .lista-pacientes-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+

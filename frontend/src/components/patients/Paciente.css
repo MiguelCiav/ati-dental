@@ -1,0 +1,158 @@
+.paciente-row {
+  display: grid;
+  grid-template-columns: 100px 2fr 1.5fr 1.5fr 120px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.paciente-row:hover {
+  background-color: #f9fafb;
+}
+
+.paciente-row:last-child {
+  border-bottom: none;
+}
+
+.paciente-cell {
+  display: flex;
+  align-items: center;
+  color: #374151;
+}
+
+.paciente-id {
+  font-weight: 500;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.paciente-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.paciente-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.paciente-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paciente-initials {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.paciente-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.paciente-nombre {
+  font-weight: 500;
+  font-size: 14px;
+  color: #111827;
+}
+
+.paciente-email {
+  font-size: 13px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paciente-fecha {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.proxima-cita {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5e3a8f;
+}
+
+.cita-icon {
+  flex-shrink: 0;
+  color: #5e3a8f;
+}
+
+.paciente-acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-button:hover {
+  background-color: #f3f4f6;
+}
+
+.view-button:hover {
+  color: #5e3a8f;
+}
+
+.edit-button:hover {
+  color: #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .paciente-row {
+    grid-template-columns: 80px 2fr 1fr 1fr 100px;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .paciente-email {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .paciente-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .paciente-cell {
+    justify-content: flex-start;
+  }
+
+  .paciente-acciones {
+    justify-content: flex-start;
+  }
+}
+

@@ -1,0 +1,112 @@
+# =============================================================================
+# docker-compose.dev.yml — Stack de Desarrollo Local (MERN)
+#
+# USO:
+#   docker compose -f docker-compose.dev.yml up
+#
+# Propósito:
+#   Levanta el stack completo en modo desarrollo con hot-reload.
+#   No interfiere con Jenkins ni con el entorno de pruebas del pipeline.
+#
+# Puertos (distintos de los entornos CI/test para evitar conflictos):
+#   Frontend  → http://localhost:5173  (Vite dev server con HMR)
+#   Backend   → http://localhost:5000
+#   MongoDB   → localhost:27018        (distinto de 27017 del CI)
+#
+# Hot-reload:
+#   Los bind mounts (./frontend:/app, ./backend/server:/usr/src/app)
+#   sincronizan el código del host con el contenedor en tiempo real.
+#   - Frontend: Vite detecta los cambios y actualiza el navegador (HMR).
+#   - Backend:  Node reinicia el servidor al cambiar archivos si agregas
+#               nodemon. Sin nodemon, haz 'docker compose restart api'.
+# =============================================================================
+
+name: ati-dental-dev
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # FRONTEND — Vite Dev Server (React con HMR)
+  # No construye una imagen de producción: usa Node directamente y levanta
+  # el servidor de desarrollo de Vite, que sirve el código en caliente.
+  # ---------------------------------------------------------------------------
+  frontend:
+    image: node:20-alpine
+    container_name: dev_frontend
+    working_dir: /app
+    volumes:
+      # Bind mount: cambios en ./frontend se reflejan al instante en el contenedor
+      - ./frontend:/app
+      # Volumen anónimo para node_modules: evita que el host sobreescriba
+      # los módulos instalados dentro del contenedor (Alpine vs Linux host)
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # necesario en algunos sistemas host (WSL, VMs)
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - api
+    networks:
+      - dev-network
+
+  # ---------------------------------------------------------------------------
+  # BACKEND — Express API
+  # Bind mount para que los cambios en el código estén disponibles de inmediato.
+  # Sin nodemon, el servidor NO se reinicia solo; ver nota en el header de este
+  # archivo. Para hot-reload real, añade nodemon a package.json y cambia el
+  # command a: sh -c "npm install && npx nodemon server.js"
+  # ---------------------------------------------------------------------------
+  api:
+    image: node:20-alpine
+    container_name: dev_api
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend/server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://admin:password123@mongo:27017/mean-docker?authSource=admin
+      - JWT_SECRET=${JWT_SECRET:-este_es_un_secreto_super_seguro_para_desarrollo_123!}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - dev-network
+
+  # ---------------------------------------------------------------------------
+  # BASE DE DATOS — MongoDB
+  # Puerto 27018 en el host (distinto de 27017 del entorno de CI/test).
+  # Volumen nombrado separado para que los datos de dev no mezclen con los de CI.
+  # ---------------------------------------------------------------------------
+  mongo:
+    image: mongo:6.0
+    container_name: dev_mongo
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    volumes:
+      - dev-mongo-data:/data/db
+    networks:
+      - dev-network
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  dev-mongo-data:
+    name: ati-dental-dev_mongo-data
+
+networks:
+  dev-network:
+    name: ati-dental-dev_network
+    driver: bridge

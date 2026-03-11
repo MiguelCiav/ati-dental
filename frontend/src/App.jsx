@@ -1,34 +1,36 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Layout from './layouts/Layout'
+import { Modal, InputField, Button, Card, ProtectedRoute } from './components'
+import { Mail, Lock, Plus, LogIn } from 'lucide-react'
+import ProfilePage from './profile/ProfileLanguage'
+import ContactPage from './contact/ContactPage'
+import { useTranslation } from 'react-i18next'
 import './App.css'
+import Login from './auth/Login'
+import PatientsPage from './patients/PatientsPage'
+import RegisterPatientPage from './patients/RegisterPatientPage'
+import PatientDetailsPage from './patients/PatientDetailsPage'
+import EditPatientPage from './patients/EditPatientPage'
+import ReportsPage from './reports/ReportsPage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/patients" replace />} />
+          <Route path="patients" element={<PatientsPage />} />
+          <Route path="patients/register" element={<RegisterPatientPage />} />
+          <Route path="patients/:id" element={<PatientDetailsPage />} />
+          <Route path="patients/:id/edit" element={<EditPatientPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="contact" element={<ContactPage />} />
+        </Route>
+      </Route>
+    </Routes>
   )
 }
 
